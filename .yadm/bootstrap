@@ -66,6 +66,10 @@ fi
 
 
 
-echo "Finished bootstrapping! Changing shell to ZSH."
-# Change the shell to ZSH --- Keep this as the last line.
+#Post tasks
+
+echo "Setting remote url to git instead of http"
+yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
+
+echo "Changing shell to ZSH."
 chsh -s /bin/zsh

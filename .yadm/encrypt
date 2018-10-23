@@ -1,3 +1,3 @@
 .gnupg/*
-.ssh/*
+.ssh/*.{key,pub}
 .config/hub
