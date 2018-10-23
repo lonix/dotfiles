@@ -1,12 +1,6 @@
 #!/bin/bash
 
-echo "Placeholder bootstrap"
-
-
 system_type=$(uname -s)
-
-
-
 
 if [ "$system_type" = "Darwin" ];then
   # install homebrew if it's missing
