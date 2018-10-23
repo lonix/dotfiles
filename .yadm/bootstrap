@@ -62,3 +62,10 @@ if [ "$system_type" = "Darwin" ]; then
   # Prevent Time Machine from prompting to use new hard drives as backup volume
   defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 fi
+
+
+
+
+echo "Finished bootstrapping! Changing shell to ZSH."
+# Change the shell to ZSH --- Keep this as the last line.
+chsh -s /bin/zsh
