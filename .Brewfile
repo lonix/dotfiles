@@ -16,6 +16,7 @@ brew "git"
 brew "hadolint"
 brew "htop"
 brew "hub"
+brew "ghi"
 brew "ipcalc"
 brew "kubectx", args: ["with-short-names"]
 brew "kubernetes-helm"
