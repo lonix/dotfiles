@@ -24,7 +24,6 @@ if [ "$system_type" = "Darwin" ];then
   fi
 
 fi
-|
 
 if [ "$system_type" = "Darwin" ]; then
   echo "Configuring MacOS Settings"
