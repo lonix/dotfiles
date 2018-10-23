@@ -3,11 +3,13 @@
 
 ## New MacOS Host
 
-```
-xcode-select --install
-mkdir -p ~/bin && curl -fLo ~/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/bin/yadm
-bin/yadm clone https://github.com/lonix/dotfiles.git --bootstrap
+```BASH
 
+xcode-select --install
+curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/yadm
+./yadm clone https://github.com/lonix/dotfiles.git --bootstrap
+yadm decrypt
+yadm perms
 
 ```
 
