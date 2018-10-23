@@ -70,6 +70,6 @@ fi
 echo "remove old YADM binary"
 rm -f $HOME/yadm
 echo "Setting remote url to git instead of http"
-l
+yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
 echo "Changing shell to ZSH."
 chsh -s /bin/zsh
