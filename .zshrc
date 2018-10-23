@@ -26,9 +26,9 @@ else
 fi
 
 ## Adding Mac alias for updating stuff
-if [[ $(uname) == "Darwin" ]]; then
-	alias mac-update="brew update && brew upgrade -y && brew cu -y && antibody update && mas upgrade && dotsync -U && dotsync -P && dotsync -A"
-fi
+# if [[ $(uname) == "Darwin" ]]; then
+# 	alias mac-update="brew update && brew upgrade -y && brew cu -y && antibody update && mas upgrade && dotsync -U && dotsync -P && dotsync -A"
+# fi
 
 #Initialize antibody pluginloader
 source <(antibody init)
