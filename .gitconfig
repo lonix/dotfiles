@@ -157,3 +157,7 @@
 	prune = true
 [commit]
 	gpgSign = true
+[github]
+	user = lonix
+[ghi]
+	token = !security find-internet-password -a lonix -s github.com -l 'ghi token' -w
