@@ -80,6 +80,12 @@ else
 	compinit -C
 fi
 
+#Load Bashcompinit
+autoload -U +X bashcompinit && bashcompinit
+
+
+
+
 #######Powerlevel 9000
 
 ## POWERLEVEL9K PROMT SETTINGS ##
