@@ -35,6 +35,7 @@
         "TODO": {},
         "FIXME": {}
     },
-    "python.linting.pylintPath": "/usr/local/bin/pylint"
+    "python.linting.pylintPath": "/usr/local/bin/pylint",
+    "editor.foldingStrategy": "indentation"
 }
 

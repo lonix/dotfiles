@@ -26,6 +26,18 @@ if [ "$system_type" = "Darwin" ];then
 
 fi
 
+if [ "$system_type" = "Linux" ]; then
+  #Install apt packages
+  echo "Installing YADM (sudo is required)"
+  sudo apt-get install -y yadm
+fi
+
+if [ "$system_type" = "Linux" ]; then
+  echo "Update/Upgrade apt (sudo is required)"
+  sudo apt-get update
+  sudo apt-get dist-upgrade -y --force-confold
+fi
+
 if [ "$system_type" = "Darwin" ]; then
   echo "Configuring MacOS Settings"
   # Show remaining battery time; hide percentage
@@ -72,8 +84,8 @@ fi
 
 
 #Post tasks
-echo "remove old YADM binary"
-rm -f $HOME/yadm
+echo "remove Temp YADM binary"
+rm -f "$HOME/yadm"
 echo "Setting remote url to git instead of http"
 yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
 echo "Changing shell to ZSH."
