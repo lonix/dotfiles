@@ -81,7 +81,15 @@ else
 fi
 
 #Load Bashcompinit
-autoload -U +X bashcompinit && bashcompinit
+
+
+
+
+if [ $commands[az] ]; then
+	autoload -U +X bashcompinit && bashcompinit
+	source /usr/local/etc/bash_completion.d/az
+fi
+
 
 
 

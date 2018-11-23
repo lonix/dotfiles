@@ -49,3 +49,7 @@ TAGS
 
 # VScode
 .jenkins
+
+
+#Vagrant
+.vagrant/*

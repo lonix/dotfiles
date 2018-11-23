@@ -13,7 +13,7 @@
     "editor.formatOnPaste": true,
     "editor.multiCursorModifier": "ctrlCmd",
     "editor.snippetSuggestions": "top",
-    "workbench.colorTheme": "Material Theme Darker",
+    "workbench.colorTheme": "Dracula",
     "jenkins.polling": 5,
     "git.confirmSync": false,
     "workbench.iconTheme": "vscode-great-icons",
@@ -36,6 +36,9 @@
         "FIXME": {}
     },
     "python.linting.pylintPath": "/usr/local/bin/pylint",
-    "editor.foldingStrategy": "indentation"
+    "editor.foldingStrategy": "indentation",
+    "team.showWelcomeMessage": false,
+    "ansible.reuseSSHTerminal": false,
+    "git.autofetch": true
 }
 
