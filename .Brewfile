@@ -9,6 +9,7 @@ tap "jenkins-x/jx"
 brew "python"
 brew "ansible"
 brew "ansible-lint"
+brew "azure-cli"
 brew "cask"
 brew "coreutils"
 brew "go"
@@ -52,12 +53,17 @@ cask "java"
 cask "keybase"
 cask "muzzle"
 cask "openemu-experimental"
+cask "powershell"
+cask "quassel-client"
 cask "spotify"
 cask "steam"
 cask "trailer"
 cask "vagrant"
+cask "vagrant-manager"
 cask "virtualbox"
 cask "visual-studio-code"
 mas "Magnet", id: 441258766
+mas "SimpleMind Lite", id: 439654198
 mas "Slack", id: 803453959
 mas "Todoist", id: 585829637
+mas "Xcode", id: 497799835

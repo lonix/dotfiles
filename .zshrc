@@ -5,7 +5,7 @@ export PATH=$HOME/.bin:$HOME/go/bin:/usr/local/bin:$PATH
 export GPG_TTY=$(tty)
 export GOPATH=$HOME/Go:/usr/local/go
 export fpath=(~/.zsh/completion $fpath)
-
+export TERM="xterm-256color"
 
 ## Add completion for Google Cloud sdk
 if [[ $(type gcloud) && $(uname) == "Darwin" ]]; then
