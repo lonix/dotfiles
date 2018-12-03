@@ -38,6 +38,8 @@ antibody bundle <<EOBUNDLE
 zsh-users/zsh-autosuggestions
 zsh-users/zsh-completions
 rupa/z
+mafredri/zsh-async
+sindresorhus/pure
 EOBUNDLE
 
 ## Add git spesific modules
@@ -56,7 +58,6 @@ fi
 
 #These bundles should always be last
 antibody bundle <<EOBUNDLE
-mafredri/zsh-async
 zsh-users/zsh-syntax-highlighting
 zsh-users/zsh-history-substring-search
 EOBUNDLE
