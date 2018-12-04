@@ -7,6 +7,12 @@ export GOPATH=$HOME/Go:/usr/local/go
 export fpath=(~/.zsh/completion $fpath)
 export TERM="xterm-256color"
 
+#Configure Prompt
+PURE_CMD_MAX_EXEC_TIME=1
+PURE_PROMPT_SYMBOL="λ"
+PURE_GIT_UNTRACKED_DIRTY=0
+
+
 ## Add completion for Google Cloud sdk
 if [[ $(type gcloud) && $(uname) == "Darwin" ]]; then
 	source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
@@ -41,6 +47,8 @@ rupa/z
 mafredri/zsh-async
 sindresorhus/pure
 EOBUNDLE
+
+
 
 ## Add git spesific modules
 if [ $commands[git] ]; then
