@@ -39,6 +39,7 @@
     "editor.foldingStrategy": "indentation",
     "team.showWelcomeMessage": false,
     "ansible.reuseSSHTerminal": false,
-    "git.autofetch": true
+    "git.autofetch": true,
+    "explorer.confirmDragAndDrop": false
 }
 
