@@ -33,7 +33,7 @@ fi
 
 # Adding Mac alias for updating stuff
 if [[ $(uname) == "Darwin" ]]; then
-	alias mac-update="brew update && brew upgrade -y && brew cu -y && antibody update && mas upgrade && yadm encrypt && yadm add -u && yadm commit && yadm push"
+	alias mac-update="brew update && brew upgrade -y && brew cu -y && antibody update && mas upgrade && yadm add -u && yadm commit -m "ran mac-update" && yadm encrypt && yadm add -u && yadm commit -m "new secrets" && yadm push"
 fi
 
 #Initialize antibody pluginloader
