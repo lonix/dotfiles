@@ -1,9 +1,5 @@
 {
     "explorer.confirmDelete": false,
-    "gitlens.advanced.messages": {
-        "suppressShowKeyBindingsNotice": true
-
-    },
     "editor.renderWhitespace": "all",
     "workbench.startupEditor": "newUntitledFile",
     "files.insertFinalNewline": true,
@@ -14,7 +10,6 @@
     "editor.multiCursorModifier": "ctrlCmd",
     "editor.snippetSuggestions": "top",
     "workbench.colorTheme": "Dracula",
-    "jenkins.polling": 5,
     "git.confirmSync": false,
     "workbench.iconTheme": "vscode-great-icons",
     "outline.problems.enabled": true,
@@ -22,7 +17,6 @@
     "terminal.integrated.fontFamily": "MesloLGLNerdFontCompleteM-Regular",
     "terminal.explorerKind": "external",
     "terminal.external.osxExec": "iTerm2",
-    "gitlens.showWhatsNewAfterUpgrades": false,
     "files.associations": {
         "Jenkinsfile": "declarative"
     },
@@ -39,7 +33,15 @@
         "TODO": {},
         "FIXME": {}
     },
-    "python.linting.pylintPath": "/usr/local/bin/pylint",
+    "markdownlint.config": {
+        "MD001": false,
+        "MD013": false,
+        "MD024": false,
+        "MD034": false,
+        "MD041": false,
+        "MD045": false
+
+    },
     "editor.foldingStrategy": "indentation",
     "team.showWelcomeMessage": false,
     "ansible.reuseSSHTerminal": false,
