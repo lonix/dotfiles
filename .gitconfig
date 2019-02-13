@@ -51,7 +51,7 @@
 [core]
     pager = less -FRSX
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
-	excludesfile = /Users/lonix/.gitignore
+	excludesFile = /Users/stian.buch.larsen/.gitignore
 
 [diff]
     tool = vimdiff
