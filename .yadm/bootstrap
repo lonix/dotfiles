@@ -26,6 +26,11 @@ if [ "$system_type" = "Darwin" ];then
 
 fi
 
+#Install VScode addons
+echo "Installing Visual Studio Code extentions"
+.~/.vscodeextentions
+
+
 if [ "$system_type" = "Linux" ]; then
   #Install apt packages
   echo "Installing YADM (sudo is required)"

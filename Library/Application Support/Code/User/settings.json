@@ -51,6 +51,7 @@
         "051ec225-8967-4f3a-9fa3-7b17fccc36c9/5c49881a-5157-4d7a-bdd4-7523955c66d9",
         "efe9fc32-844b-45fe-a128-553444bb9a67/8d3a5758-95d1-4c8e-8350-5a7d023d8eb3"
     ],
-    "powershell.developer.editorServicesLogLevel": "Verbose"
+    "powershell.developer.editorServicesLogLevel": "Verbose",
+    "window.zoomLevel": 1
 }
 
