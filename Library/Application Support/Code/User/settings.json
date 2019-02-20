@@ -42,6 +42,7 @@
         "MD045": false
 
     },
+    "cSpell.language": "en,lorem,fullstack,en-US",
     "editor.foldingStrategy": "indentation",
     "team.showWelcomeMessage": false,
     "ansible.reuseSSHTerminal": false,
