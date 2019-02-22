@@ -29,6 +29,9 @@ fi
 #Install VScode addons
 echo "Installing Visual Studio Code extentions"
 .~/.vscodeextentions
+# @todo fix this
+# @body This dident work, when i tried bootstrapping my mac, "command not found"
+# @todo Ensure VScode addons is a only if installed thing
 
 
 if [ "$system_type" = "Linux" ]; then
@@ -39,6 +42,8 @@ if [ "$system_type" = "Linux" ]; then
     snap install antibody -y
   fi
 fi
+# @todo check if the snap install yadm code is correct
+
 
 if [ "$system_type" = "Linux" ]; then
   echo "Update/Upgrade apt (sudo is required)"
@@ -88,6 +93,9 @@ if [ "$system_type" = "Darwin" ]; then
   defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 fi
 
+# Todo´s
+# @todo Remove objects from mac Dock.
+# @todo Ensure
 
 
 
