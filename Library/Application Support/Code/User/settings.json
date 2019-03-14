@@ -20,7 +20,8 @@
     "telemetry.enableTelemetry": true,
     "telemetry.enableCrashReporter": true,
     "files.associations": {
-        "Jenkinsfile": "declarative"
+        "Jenkinsfile": "declarative",
+        "*.yml": "ansible-advanced"
     },
     "git.enableSmartCommit": true,
     "todo-tree.defaultHighlight": {

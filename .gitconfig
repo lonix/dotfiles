@@ -140,6 +140,7 @@
     rea = remote add
     rex = remote rm
     rem = remote rename
+	ignore = "!gi() { curl -sL https://www.gitignore.io/api/$@ ;}; gi"
 
 [push]
     default = matching
