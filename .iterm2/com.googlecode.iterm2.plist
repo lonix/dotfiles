@@ -67,20 +67,12 @@
 	</data>
 	<key>NSTableView Supports v2 KeyBingingTable</key>
 	<true/>
-	<key>NSWindow Frame ProfilesPanel</key>
-	<string>906 524 735 382 0 0 1920 1200 </string>
-	<key>NSWindow Frame SUStatusFrame</key>
-	<string>912 558 400 129 0 0 1680 1027 </string>
-	<key>NSWindow Frame SUUpdateAlert</key>
-	<string>610 511 700 508 0 0 1920 1177 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>468 324 958 470 0 0 1920 1200 </string>
+	<string>383 419 770 429 0 0 1920 1200 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 481 650 552 0 0 1920 1177 </string>
+	<string>525 -725 650 552 0 -900 1440 900 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
-	<string>0 0 1677 1054 0 0 1680 1050 </string>
-	<key>NSWindow Frame iTerm Window 2</key>
-	<string>275 40 650 552 0 0 1680 1050 </string>
+	<string>548 343 650 534 0 0 1440 900 </string>
 	<key>New Bookmarks</key>
 	<array>
 		<dict>
@@ -1869,22 +1861,18 @@
 	<true/>
 	<key>NoSyncCommandHistoryHasEverBeenUsed</key>
 	<true/>
-	<key>NoSyncConfirmRunOpenFile</key>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste</key>
 	<true/>
-	<key>NoSyncConfirmRunOpenFile_selection</key>
+	<key>NoSyncDoNotWarnBeforeMultilinePaste_selection</key>
 	<integer>0</integer>
-	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt</key>
-	<true/>
-	<key>NoSyncDoNotWarnBeforePastingOneLineEndingInNewlineAtShellPrompt_selection</key>
-	<integer>1</integer>
 	<key>NoSyncHaveRequestedFullDiskAccess</key>
 	<true/>
 	<key>NoSyncHaveWarnedAboutPasteConfirmationChange</key>
 	<true/>
 	<key>NoSyncInstallationId</key>
-	<string>70CA88DD-83B6-49B3-A8CF-48BD02D018F9</string>
+	<string>3C9FBDB7-EA55-40F2-9CF3-1BA135545BAB</string>
 	<key>NoSyncLastTipTime</key>
-	<real>563350523.66868496</real>
+	<real>574248043.26670897</real>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile_selection</key>
@@ -1896,12 +1884,18 @@
 	<key>NoSyncPermissionToShowTip</key>
 	<true/>
 	<key>NoSyncTimeOfFirstLaunchOfVersionWithTip</key>
-	<real>562680390.61628306</real>
-	<key>NoSyncTipsDisabled</key>
-	<true/>
+	<real>572361838.75847697</real>
 	<key>NoSyncTipsToNotShow</key>
 	<array>
 		<string>000</string>
+		<string>0000</string>
+		<string>0001</string>
+		<string>0002</string>
+		<string>0003</string>
+		<string>0004</string>
+		<string>0005</string>
+		<string>0006</string>
+		<string>0007</string>
 	</array>
 	<key>OpenTmuxWindowsIn</key>
 	<integer>0</integer>
@@ -1941,17 +1935,15 @@
 		</dict>
 	</dict>
 	<key>PrefsCustomFolder</key>
-	<string>/Users/stian.buch.larsen/.iterm2</string>
+	<string>/Users/lonix/.iterm2</string>
 	<key>SUEnableAutomaticChecks</key>
-	<true/>
+	<false/>
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/testing.xml?shard=21</string>
+	<string>https://iterm2.com/appcasts/testing.xml?shard=58</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
-	<key>SULastCheckTime</key>
-	<date>2019-01-28T09:02:09Z</date>
 	<key>SUSendProfileInfo</key>
 	<false/>
 	<key>SavePasteHistory</key>
@@ -1969,13 +1961,12 @@
 	<key>ToolbeltTools</key>
 	<array>
 		<string>Command History</string>
-		<string>Recent Directories</string>
 	</array>
 	<key>WindowNumber</key>
 	<true/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
 	<key>iTerm Version</key>
-	<string>3.2.7beta4</string>
+	<string>3.2.7</string>
 </dict>
 </plist>
