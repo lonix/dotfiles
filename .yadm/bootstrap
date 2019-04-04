@@ -37,9 +37,6 @@ if [ "$system_type" = "Linux" ]; then
   #Install apt packages
   echo "Installing YADM (sudo is required)"
   sudo apt-get install -y yadm zsh
-  if command -v snap >/dev/null 2>&1; then
-    snap install antibody -y
-  fi
 fi
 # @todo check if the snap install yadm code is correct
 
