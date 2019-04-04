@@ -64,6 +64,9 @@
         "efe9fc32-844b-45fe-a128-553444bb9a67/8d3a5758-95d1-4c8e-8350-5a7d023d8eb3"
     ],
     "powershell.developer.editorServicesLogLevel": "Verbose",
-    "window.zoomLevel": 1
+    "window.zoomLevel": 1,
+    "vs-kubernetes": {
+        "vs-kubernetes.minikube-path": "/Users/lonix/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
+    }
 }
 
