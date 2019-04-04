@@ -11,6 +11,11 @@
 [user]
 	name = Stian Buch Larsen
 	email = lonixx@gmail.com
+	signingkey = 55CF05DD043E4F6C
+
+[include]
+    path = .gitconfig.local
+
 
 [branch "master"]
     remote = origin
@@ -50,7 +55,7 @@
 [core]
     pager = less -FRSX
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
-	excludesFile = /Users/stian.buch.larsen/.gitignore
+	excludesFile = ~/.gitignore
 
 [diff]
     tool = vimdiff
@@ -157,7 +162,3 @@
 	prune = true
 [commit]
 	gpgSign = true
-[github]
-	user = lonix
-[ghi]
-	token = !security find-internet-password -a lonix -s github.com -l 'ghi token' -w

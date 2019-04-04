@@ -103,11 +103,6 @@ if [ "$system_type" = "Darwin" ]; then
 
 fi
 
-# Todo´s
-# @todo Remove objects from mac Dock.
-# @todo Ensure
-
-
 
 #Post tasks
 echo "remove Temp YADM binary"
