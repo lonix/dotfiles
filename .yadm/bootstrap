@@ -35,17 +35,19 @@ fi
 
 if [ "$system_type" = "Linux" ]; then
   #Install apt packages
-  echo "Installing YADM (sudo is required)"
+  echo "Installing YADM/ZSH (sudo is required)"
   sudo apt-get install -y yadm zsh
 fi
-# @todo check if the snap install yadm code is correct
 
 
+# @todo Verify the functinality
+# @body The following code looks broken
 if [ "$system_type" = "Linux" ]; then
   echo "Update/Upgrade apt (sudo is required)"
   sudo apt-get updateyad
   sudo apt-get dist-upgrade -y --force-confold
 fi
+
 
 if [ "$system_type" = "Darwin" ]; then
   echo "Configuring MacOS Settings"
@@ -98,6 +100,9 @@ if [ "$system_type" = "Darwin" ]; then
   killall Dock
 
 fi
+
+# @todo Reorganize this script
+# @body this script feels like it could be optimized significantly
 
 
 #Post tasks
