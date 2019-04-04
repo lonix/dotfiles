@@ -29,7 +29,7 @@ fi
 #Install VScode addons
 if [ $commands[code] ]; then
   echo "Installing Visual Studio Code extentions"
-  .~/.vscodeextentions
+  ~/.vscodeextentions
 fi
 
 
@@ -43,7 +43,7 @@ fi
 
 if [ "$system_type" = "Linux" ]; then
   echo "Update/Upgrade apt (sudo is required)"
-  sudo apt-get update
+  sudo apt-get updateyad
   sudo apt-get dist-upgrade -y --force-confold
 fi
 
