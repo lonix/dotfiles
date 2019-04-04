@@ -31,6 +31,8 @@ else
 	export EDITOR='code -w '
 fi
 
+# @todo re-write this to a .bin
+# @body there is to many factors for this to be a alias, reminder to make it with ##Darwin suffix
 # Adding Mac alias for updating stuff
 if [[ $(uname) == "Darwin" ]]; then
 	alias mac-update="brew update && brew upgrade -y && brew cu -y && antibody update && mas upgrade && yadm add -u && yadm commit -m "ran mac-update" && yadm encrypt && yadm add -u && yadm commit -m "new secrets" && yadm push"
