@@ -27,11 +27,10 @@ if [ "$system_type" = "Darwin" ];then
 fi
 
 #Install VScode addons
-echo "Installing Visual Studio Code extentions"
-.~/.vscodeextentions
-# @todo fix this
-# @body This dident work, when i tried bootstrapping my mac, "command not found"
-# @todo Ensure VScode addons is a only if installed thing
+if [ $commands[code] ]; then
+  echo "Installing Visual Studio Code extentions"
+  .~/.vscodeextentions
+fi
 
 
 if [ "$system_type" = "Linux" ]; then
