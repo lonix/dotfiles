@@ -91,6 +91,16 @@ if [ "$system_type" = "Darwin" ]; then
   defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
   # Prevent Time Machine from prompting to use new hard drives as backup volume
   defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+  # Configure Apple Dock
+  defaults write com.apple.dock static-only -bool TRUE
+  defaults write com.apple.dock autohide -bool TRUE
+  defaults write com.apple.dock showhidden -bool TRUE
+  defaults write com.apple.dock tilesize 25
+  defaults write com.apple.dock mineffect suck
+
+  #Restart Apple Dock
+  killall Dock
+
 fi
 
 # Todo´s
