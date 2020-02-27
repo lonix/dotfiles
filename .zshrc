@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 #Export for personal Binarys
-export PATH=$HOME/.bin:$HOME/go/bin:/usr/local/bin:$PATH
+export PATH=$HOME/.bin:$HOME/Go/bin:/usr/local/bin:$PATH
 export GPG_TTY=$(tty)
 export GOPATH=$HOME/Go:/usr/local/go
 export fpath=(~/.zsh/completion $fpath)
