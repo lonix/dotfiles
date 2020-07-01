@@ -33,10 +33,13 @@ if [ $commands[code] ]; then
 fi
 
 
-if [ "$system_type" = "Linux" ]; then
-  #Install apt packages
+# @todo replace yadm source to git
+# @body The package in apt is v.1.2 wich is outdated by a major version
+#Install apt packages
+if
   echo "Installing YADM/ZSH (sudo is required)"
-  sudo apt-get install -y yadm zsh
+
+  #sudo apt-get install -y yadm zsh
 fi
 
 
