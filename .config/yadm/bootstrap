@@ -4,7 +4,6 @@
 # vscode
 # Homebrew
 # Iterm2
-# Yadm 
 # zsh
 # antibody
 
@@ -40,25 +39,19 @@ if [ $commands[code] ]; then
   ~/.vscodeextentions
 fi
 
-
-# @todo replace yadm source to git
-# @body The package in apt is v.1.2 wich is outdated by a major version
-#Install apt packages
-if
-  echo "Installing YADM/ZSH (sudo is required)"
-
-  #sudo apt-get install -y yadm zsh
-fi
+# Install and update YADM on every bootstrap
+echo "Installing/updateing YADM (sudo is required)"
+curl -fLo ~/.bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm &&  chmod a+x ~/.bin/yadm
 
 
 if [ "$system_type" = "Linux" ]; then
-  if [ $commands[apt-get]]; then
+  if [ $commands[apt-get] ]; then
     echo "Updating apt"
     sudo apt-get update
     sudo apt-get dist-upgrade -y --force-confold
   fi
 
-  if [ $commands[dnf]]; then
+  if [ $commands[dnf] ]; then
   echo "Updating dnf"
   sudo dnf distro-sync -y
   fi
