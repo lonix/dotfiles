@@ -1,5 +1,13 @@
 #!/bin/bash
 
+# needs:
+# vscode
+# Homebrew
+# Iterm2
+# Yadm 
+# zsh
+# antibody
+
 system_type=$(uname -s)
 
 if [ "$system_type" = "Darwin" ];then
@@ -43,12 +51,17 @@ if
 fi
 
 
-# @todo Verify the functinality
-# @body The following code looks broken
 if [ "$system_type" = "Linux" ]; then
-  echo "Update/Upgrade apt (sudo is required)"
-  sudo apt-get updateyad
-  sudo apt-get dist-upgrade -y --force-confold
+  if [ $commands[apt-get]]; then
+    echo "Updating apt"
+    sudo apt-get update
+    sudo apt-get dist-upgrade -y --force-confold
+  fi
+
+  if [ $commands[dnf]]; then
+  echo "Updating dnf"
+  sudo dnf distro-sync -y
+  fi
 fi
 
 
@@ -109,9 +122,12 @@ fi
 
 
 #Post tasks
+
 echo "remove Temp YADM binary"
 rm -f "$HOME/yadm"
+
 echo "Setting remote url to git instead of http"
 yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
+
 echo "Changing shell to ZSH."
 chsh -s /bin/zsh
