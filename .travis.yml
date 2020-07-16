@@ -7,15 +7,17 @@ before_install: |
   if [ "$TRAVIS_OS_NAME" == "linux" ]; then
     sudo apt-get update >/dev/null
     sudo apt-get install -y zsh
+    curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/yadm
+
   else
     brew update >/dev/null
     brew install zsh
+    curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/yadm
+
   fi
-  curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/yadm
 
 install: |
   ./yadm clone https://github.com/lonix/dotfiles.git --bootstrap
 
-script: make ci
 notifications:
   email: false
