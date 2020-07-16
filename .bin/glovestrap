@@ -11,5 +11,5 @@ code -w  ~/.vscodeextentions ~/.Brewfile
 
 echo "Will save files to repo"
 yadm add ~/.Brewfile ~/.vscodeextentions
-yadm commit 
+yadm commit -m "updateed vs code and brew install list"
 yadm push

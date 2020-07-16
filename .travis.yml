@@ -1,0 +1,23 @@
+language: ruby
+os:
+  - linux
+  - osx
+
+before_install: |
+  if [ "$TRAVIS_OS_NAME" == "linux" ]; then
+    sudo apt-get update >/dev/null
+    sudo apt-get install -y zsh
+    curl -fLo ${PWD}/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ${PWD}/yadm
+
+  else
+    brew update >/dev/null
+    brew install zsh
+    curl -fLo ${PWD}/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ${PWD}/yadm
+
+  fi
+
+install:
+- ${PWD}/yadm clone https://github.com/lonix/dotfiles.git --bootstrap
+
+notifications:
+  email: false
