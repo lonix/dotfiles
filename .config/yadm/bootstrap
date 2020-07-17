@@ -20,7 +20,7 @@ if [ "$system_type" = "Darwin" ];then
     echo "Updating homebrew bundle"
     brew bundle --global
   fi
- #Set iterm2 config
+  #Set iterm2 config
   if [ -d "$HOME/.iterm2" ]; then
     echo "Setting iTerm preference folder"
     defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.iterm2"
