@@ -37,8 +37,8 @@
         "type": "none"
     },
     "remoteBrowser.connectionOptions": {
-        "host": "feederbox.lonix.me",
-        "username": "seed"
+        "host": "delta.lonix.me",
+        "username": "lonix"
     },
     "todo-tree.customHighlight": {
         "TODO": {},
