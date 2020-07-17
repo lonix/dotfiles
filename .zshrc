@@ -15,27 +15,27 @@ PURE_GIT_UNTRACKED_DIRTY=0
 
 ## Add completion for Google Cloud sdk
 if [[ $(type gcloud) && $(uname) == "Darwin" ]]; then
-	source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
-	source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/path.zsh.inc'
+  source '/usr/local/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc'
 fi
 
 ##Add iterm intigration
 if [[ $(uname) == "Darwin" ]]; then
-	source ~/.iterm2_shell_integration.$(basename $SHELL)
+  source ~/.iterm2_shell_integration.$(basename $SHELL)
 fi
 
 ##Configure default editior for local and SSH sessions
 if [[ -n $SSH_CONNECTION ]]; then
-	export EDITOR='vim'
+  export EDITOR='vim'
 else
-	export EDITOR='code -w '
+  export EDITOR='code -w '
 fi
 
 # @todo re-write this to a .bin
 # @body there is to many factors for this to be a alias, reminder to make it with ##Darwin suffix
 # Adding Mac alias for updating stuff
 if [[ $(uname) == "Darwin" ]]; then
-	alias mac-update="brew update && brew upgrade -y && brew cu -y && antibody update && mas upgrade && yadm add -u && yadm commit -m "ran mac-update" && yadm encrypt && yadm add -u && yadm commit -m "new secrets" && yadm push"
+  alias mac-update="brew update && brew upgrade -y && brew cu -y && antibody update && mas upgrade && yadm add -u && yadm commit -m "ran mac-update" && yadm encrypt && yadm add -u && yadm commit -m "new secrets" && yadm push"
 fi
 
 #Initialize antibody pluginloader
@@ -54,7 +54,7 @@ EOBUNDLE
 
 ## Add git spesific modules
 if [ $commands[git] ]; then
-	antibody bundle <<EOBUNDLE
+  antibody bundle <<EOBUNDLE
 caarlos0/zsh-git-fetch-merge kind:path
 caarlos0/zsh-git-sync kind:path
 caarlos0/zsh-open-pr kind:path
@@ -63,7 +63,7 @@ EOBUNDLE
 fi
 
 if [ $commands[kubectl] ]; then
-	source <(kubectl completion zsh)
+  source <(kubectl completion zsh)
 fi
 
 #These bundles should always be last
@@ -76,15 +76,15 @@ EOBUNDLE
 autoload -Uz compinit
 
 if [[ $(date +'%j') != $(date -r ~/.zcompdump +%j) ]]; then
-		compinit
+    compinit
 else
-	compinit -C
+  compinit -C
 fi
 
 #Load Bashcompinit
 if [ $commands[az] ]; then
-	autoload -U +X bashcompinit && bashcompinit
-	source /usr/local/etc/bash_completion.d/az
+  autoload -U +X bashcompinit && bashcompinit
+  source /usr/local/etc/bash_completion.d/az
 fi
 
 
