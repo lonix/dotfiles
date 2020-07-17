@@ -1,4 +1,3 @@
 .gnupg/*
-.ssh/*.key
-.ssh/*.pub
+.ssh/id_rsa*
 .config/hub
