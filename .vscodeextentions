@@ -5,7 +5,6 @@ code --install-extension deaniusolutions.deckset
 code --install-extension dracula-theme.theme-dracula
 code --install-extension eg2.tslint
 code --install-extension emmanuelbeziat.vscode-great-icons
-code --install-extension erd0s.terraform-autocomplete
 code --install-extension formulahendry.github-actions
 code --install-extension gayanhewa.referenceshelper
 code --install-extension GitHub.vscode-pull-request-github
@@ -27,14 +26,12 @@ code --install-extension ms-vsts.team
 code --install-extension msazurermtools.azurerm-vscode-tools
 code --install-extension mutantdino.resourcemonitor
 code --install-extension oderwat.indent-rainbow
-code --install-extension p1c2u.docker-compose
 code --install-extension PeterJausovec.vscode-docker
 code --install-extension rbalet.code-spell-checker-fullstack
 code --install-extension rbalet.code-spell-checker-lorem
 code --install-extension redhat.vscode-yaml
 code --install-extension rogalmic.bash-debug
 code --install-extension rupisaini.vscode-ansible-linter
-code --install-extension samcogan.arm-snippets
 code --install-extension shakram02.bash-beautify
 code --install-extension sprdp.remote-browser
 code --install-extension streetsidesoftware.code-spell-checker
