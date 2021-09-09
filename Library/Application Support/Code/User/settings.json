@@ -61,12 +61,27 @@
     "explorer.confirmDragAndDrop": false,
     "azure.resourceFilter": [
         "051ec225-8967-4f3a-9fa3-7b17fccc36c9/5c49881a-5157-4d7a-bdd4-7523955c66d9",
-        "efe9fc32-844b-45fe-a128-553444bb9a67/8d3a5758-95d1-4c8e-8350-5a7d023d8eb3"
+        "efe9fc32-844b-45fe-a128-553444bb9a67/8d3a5758-95d1-4c8e-8350-5a7d023d8eb3",
+        "8266c641-29de-4eca-9274-3a63422cc5c7/b9abb4e4-a4a2-4699-b708-54d76e5ba325",
+        "8266c641-29de-4eca-9274-3a63422cc5c7/2954ac95-c0a9-4f4d-93f2-f3aae65decd0"
     ],
     "powershell.developer.editorServicesLogLevel": "Verbose",
     "window.zoomLevel": 1,
     "vs-kubernetes": {
         "vs-kubernetes.minikube-path": "/Users/lonix/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
-    }
+    },
+    "todo-tree.highlights.customHighlight": {
+        "TODO": {},
+        "FIXME": {}
+    },
+    "todo-tree.highlights.defaultHighlight": {
+        "foreground": "green",
+        "type": "none"
+    },
+    "security.workspace.trust.untrustedFiles": "open",
+    "redhat.telemetry.enabled": true,
+    "cSpell.userWords": [
+        "lonix"
+    ]
 }
 

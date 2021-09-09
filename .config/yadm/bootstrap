@@ -124,3 +124,8 @@ yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
 
 echo "Changing shell to ZSH."
 chsh -s /bin/zsh
+
+
+# #TODO: Install fish
+# TODO: Install Fisher
+# TODO: Fisher Plugins: evanlucas/fish-kubectl-completions
