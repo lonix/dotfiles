@@ -6,10 +6,13 @@ code --list-extensions | xargs -L 1 echo code --install-extension > ~/.vscodeext
 echo "Export installed Brew/cask/mas packages to ~/.Brewfile"
 brew bundle dump --global --force
 
+echo "Export installed Fish Modules"
+fisher list > ~/.fisher-list
+
 echo "done, opening VS code to allow for file washing"
-code -w  ~/.vscodeextentions ~/.Brewfile
+code -w  ~/.vscodeextentions ~/.Brewfile ~/.fisher-list
 
 echo "Will save files to repo"
-yadm add ~/.Brewfile ~/.vscodeextentions
+yadm add ~/.Brewfile ~/.vscodeextentions ~/.fisher-list
 yadm commit -m "updateed vs code and brew install list"
 yadm push
