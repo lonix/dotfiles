@@ -1,8 +1,11 @@
 if status is-interactive
-    # Commands to run in interactive sessions can go here
+    export EDITOR='code -w '
+else
+    export EDITOR='vim'
+fi
 end
+
+fish_add_path -p ~/.bin
 
 starship init fish | source
 
-
-fish_add_path -p ~/.bin
