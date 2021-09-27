@@ -1,7 +1,7 @@
 #!/bin/bash
 if [[ $(uname) == "Darwin" ]]; then
   brew update
-  brew upgrade -y
+  brew upgrade
   brew cu -y
   fisher update
   mas upgrade

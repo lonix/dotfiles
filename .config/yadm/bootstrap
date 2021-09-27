@@ -27,6 +27,15 @@ if [ "$system_type" = "Darwin" ];then
   fi
 fi
 
+#Installing fish
+
+if [ $commands[apt] ]; then
+  echo "Ubuntu // Debian expected"
+  apt-add-repository ppa:fish-shell/release-3
+  apt-get update
+  apt-get install fish -y
+fi
+
 #Installing Fisher
 if [ $commands[fish] ]; then
   echo "Fish is installed"

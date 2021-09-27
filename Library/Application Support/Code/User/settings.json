@@ -1,6 +1,8 @@
 {
     "explorer.confirmDelete": false,
     "editor.renderWhitespace": "all",
+    "editor.renderControlCharacters": true,
+    "editor.renderIndentGuides": true,
     "workbench.startupEditor": "newUntitledFile",
     "files.insertFinalNewline": true,
     "editor.fontSize": 13,
@@ -17,6 +19,7 @@
     "terminal.integrated.fontFamily": "MesloLGLNerdFontCompleteM-Regular",
     "terminal.explorerKind": "external",
     "terminal.external.osxExec": "iTerm2",
+    "terminal.external.linuxExec": "xterm",
     "telemetry.enableTelemetry": true,
     "telemetry.enableCrashReporter": true,
     "files.associations": {
@@ -68,7 +71,10 @@
     "powershell.developer.editorServicesLogLevel": "Verbose",
     "window.zoomLevel": 1,
     "vs-kubernetes": {
-        "vs-kubernetes.minikube-path": "/Users/lonix/.vs-kubernetes/tools/minikube/darwin-amd64/minikube"
+        "vs-kubernetes.minikube-path": "/Users/lonix/.vs-kubernetes/tools/minikube/darwin-amd64/minikube",
+        "vscode-kubernetes.minikube-path.windows": "C:\\Users\\lonix\\.vs-kubernetes\\tools\\minikube\\windows-amd64\\minikube.exe",
+        "vscode-kubernetes.helm-path.windows": "C:\\Users\\lonix\\.vs-kubernetes\\tools\\helm\\windows-amd64\\helm.exe",
+        "vscode-kubernetes.kubectl-path.windows": "C:\\Users\\lonix\\.vs-kubernetes\\tools\\kubectl\\kubectl.exe"
     },
     "todo-tree.highlights.customHighlight": {
         "TODO": {},
@@ -81,7 +87,14 @@
     "security.workspace.trust.untrustedFiles": "open",
     "redhat.telemetry.enabled": true,
     "cSpell.userWords": [
-        "lonix"
-    ]
+        "bootcamp",
+        "kubenet",
+        "lonix",
+        "microsky",
+        "vnet"
+    ],
+    "markdown-preview-enhanced.liveUpdate": false,
+    "files.trimFinalNewlines": false,
+    "github-actions.org-features": true,
+    "remoteHub.richNavigation.enabled": true
 }
-
