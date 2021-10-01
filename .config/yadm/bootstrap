@@ -40,6 +40,9 @@ fi
 if [ $commands[fish] ]; then
   echo "Fish is installed"
   fish ~/.config/yadm/bootstrap.d/fisher.fish
+  if [ "$system_type" = "Linux" ]; then
+    echo "Installing Starship from git"
+    sh -c "$(curl -fsSL https://starship.rs/install.sh)"
 fi
 
 # Install and update YADM on every bootstrap
@@ -126,7 +129,7 @@ echo "Setting remote url to git instead of http"
 yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
 
 echo "Changing shell to ZSH."
-chsh -s /bin/zsh
+chsh -s /bin/fish
 
 
 # TODO: Install Fisher
