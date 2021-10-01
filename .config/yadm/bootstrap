@@ -42,12 +42,6 @@ if [ $commands[fish] ]; then
   fish ~/.config/yadm/bootstrap.d/fisher.fish
 fi
 
-#Install VScode addons
-if [ $commands[code] ]; then
-  echo "Installing Visual Studio Code extentions"
-  ~/.vscodeextentions
-fi
-
 # Install and update YADM on every bootstrap
 echo "Installing/updateing YADM (sudo is required)"
 curl -fLo ~/.bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm &&  chmod a+x ~/.bin/yadm
