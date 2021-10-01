@@ -43,6 +43,7 @@ if [ $commands[fish] ]; then
   if [ "$system_type" = "Linux" ]; then
     echo "Installing Starship from git"
     sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+  fi
 fi
 
 # Install and update YADM on every bootstrap
