@@ -1,0 +1,13 @@
+#!/bin/sh
+
+if [ "$1" ]; then
+  scutil --set ComputerName "$1"
+  scutil --set LocalHostName "$1"
+  scutil --set HostName "$1"
+else
+  echo "Run this utility with the hostname as parameter1"
+fi
+
+
+
+
