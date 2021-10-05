@@ -117,6 +117,10 @@ if [ "$system_type" = "Darwin" ]; then
 
 fi
 
+if [ "$system_type" = "Darwin" ];then
+  echo "wont install that crap"
+fi
+
 # @todo Reorganize this script
 # @body this script feels like it could be optimized significantly
 
