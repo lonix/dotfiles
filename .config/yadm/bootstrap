@@ -112,25 +112,21 @@ if [ "$system_type" = "Darwin" ]; then
 
 fi
 
-if [ "$system_type" = "Darwin" ];then
-  echo "wont install that crap"
-fi
-
 # @todo Reorganize this script
 # @body this script feels like it could be optimized significantly
 
 
 #Post tasks
+if [ -z "$CI" ]; then
+  echo "remove Temp YADM binary"
+  rm -f "$HOME/yadm"
 
-echo "remove Temp YADM binary"
-rm -f "$HOME/yadm"
+  echo "Setting remote url to git instead of http"
+  yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
 
-echo "Setting remote url to git instead of http"
-yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
-
-echo "Changing shell to fish."
-chsh -s "$(which fish)"
-
+  echo "Changing shell to fish."
+  chsh -s "$(which fish)"
+fi
 
 # TODO: Install Fisher
 # TODO: Fisher Plugins: evanlucas/fish-kubectl-completions
