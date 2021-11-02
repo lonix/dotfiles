@@ -162,3 +162,5 @@
 	prune = true
 [commit]
 	gpgSign = true
+[pull]
+	rebase = true
