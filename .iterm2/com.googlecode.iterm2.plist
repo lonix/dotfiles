@@ -1862,7 +1862,11 @@
 	<key>SoundForEsc</key>
 	<false/>
 	<key>SwitchPaneModifier</key>
-	<integer>6</integer>
+	<integer>1</integer>
+	<key>SwitchTabModifier</key>
+	<integer>4</integer>
+	<key>SwitchWindowModifier</key>
+	<integer>9</integer>
 	<key>TabStyle</key>
 	<integer>1</integer>
 	<key>TabStyleWithAutomaticOption</key>
@@ -1873,11 +1877,20 @@
 	<array>
 		<string>Command History</string>
 	</array>
+	<key>URLHandlersByGuid</key>
+	<dict>
+		<key>iterm2</key>
+		<string>FDB4A7D9-0235-4DB4-9BAF-2089273B05DB</string>
+		<key>ssh</key>
+		<string>FDB4A7D9-0235-4DB4-9BAF-2089273B05DB</string>
+	</dict>
 	<key>VisualIndicatorForEsc</key>
 	<false/>
 	<key>WindowNumber</key>
 	<true/>
 	<key>WordCharacters</key>
 	<string>/-+\~_.</string>
+	<key>findMode_iTerm</key>
+	<integer>0</integer>
 </dict>
 </plist>
