@@ -1,23 +1,21 @@
-  # Replace the "❯" symbol in the prompt with "➜"
-[character]                            # The name of the module we are configuring is "character"
-success_symbol = "[λ](bold green)"     # The "success_symbol" segment is being set to "➜" with the color "bold green"
+[character]
+success_symbol = "[λ](bold green)"
 error_symbol = "[λ](bold red)"
-
 
 [gcloud]
 disabled = true
 
+[nodejs]
+disabled = true
 
 [kubernetes]
 disabled = true
 
 [kubernetes.context_aliases]
-
 "*minikube*" = "minikube"
 "gke_.*_(?P<cluster>[\\w-]+)" = "gke-$cluster"
 
-
 [time]
-disabled = true
+disabled = false
 format = '🕙[\[ $time \]]($style) '
-time_range = "07:00:00-18:00:00"
+time_range = "08:00:00-16:00:00"
