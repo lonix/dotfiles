@@ -4,6 +4,9 @@ else
     export EDITOR='vim'
 end
 
+#GPG Hack
+set -gx GPG_TTY (tty)
+
 fish_add_path -p ~/.bin
 fish_add_path /usr/local/sbin
 starship init fish | source
