@@ -1,132 +1,24 @@
 #!/bin/bash
 
-system_type=$(uname -s)
+# Save this file as ~/.config/yadm/bootstrap and make it executable. It will
+# execute all executable files (excluding templates and editor backups) in the
+# ~/.config/yadm/bootstrap.d directory when run.
 
-if [ "$system_type" = "Darwin" ];then
-  # install homebrew if it's missing
-  if ! command -v brew >/dev/null 2>&1; then
-    echo "Installing homebrew"
-    /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-  fi
+set -eu
 
-  if [ -f "$HOME/.Brewfile" ]; then
-    echo "Updating homebrew bundle"
-    brew bundle --global
-  fi
+# Directory to look for bootstrap executables in
+BOOTSTRAP_D="${BASH_SOURCE[0]}.d"
 
-  #Set iterm2 config
-  if [ -d "$HOME/.iterm2" ]; then
-    echo "Setting iTerm preference folder"
-    defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.iterm2"
-    defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
-  fi
+if [[ ! -d "$BOOTSTRAP_D" ]]; then
+    echo "Error: bootstrap directory '$BOOTSTRAP_D' not found" >&2
+    exit 1
 fi
 
-#Installing fish
-
-if [ $commands[apt] ]; then
-  echo "Ubuntu // Debian expected"
-  sudo apt-add-repository ppa:fish-shell/release-3 -y
-  sudo apt-get update
-  sudo apt-get install fish -y
-fi
-
-#Installing Fisher
-if [ $commands[fish] ]; then
-  if [ "$system_type" = "Linux" ]; then
-    echo "Installing Starship from git"
-    sh -c "$(curl -fsSL https://starship.rs/install.sh)"
-  fi
-  echo "Fish is installed"
-  fish ~/.config/yadm/bootstrap.d/fisher.fish
-fi
-
-# Install and update YADM on every bootstrap
-echo "Installing/updateing YADM (sudo is required)"
-curl -fLo ~/.bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm &&  chmod a+x ~/.bin/yadm
-
-
-if [ "$system_type" = "Linux" ]; then
-  if [ $commands[apt-get] ]; then
-    echo "Updating apt"
-    sudo apt-get update
-    sudo apt-get dist-upgrade -y --force-confold
-  fi
-
-  if [ $commands[dnf] ]; then
-  echo "Updating dnf"
-  sudo dnf distro-sync -y
-  fi
-fi
-
-
-if [ "$system_type" = "Darwin" ]; then
-  echo "Configuring MacOS Settings"
-  # Show remaining battery time; hide percentage
-  defaults write com.apple.menuextra.battery ShowPercent -string "NO"
-  defaults write com.apple.menuextra.battery ShowTime -string "YES"
-  # Expand save panel by default
-  defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
-  # Expand print panel by default
-  defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
-  # Disable opening and closing window animations
-  defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
-  # Disable Mission Control Animations
-  defaults write com.apple.dock expose-animation-duration -int 0
-  # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
-  defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
-  # Disable auto-correct
-  defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
-  # Require password immediately after sleep or screen saver begins
-  defaults write com.apple.screensaver askForPassword -int 1
-  defaults write com.apple.screensaver askForPasswordDelay -int 0
-  # Show status bar in Finder
-  defaults write com.apple.finder ShowStatusBar -bool true
-  # Allow text selection in Quick Look
-  defaults write com.apple.finder QLEnableTextSelection -bool true
-  # Display full POSIX path as Finder window title
-  defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
-  # Avoid creating .DS_Store files on network volumes
-  defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
-  # Disable the warning when changing a file extension
-  defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
-  # Disable the warning before emptying the Trash
-  defaults write com.apple.finder WarnOnEmptyTrash -bool false
-  # Empty Trash securely by default
-  defaults write com.apple.finder EmptyTrashSecurely -bool true
-  # Show indicator lights for open applications in the Dock
-  defaults write com.apple.dock show-process-indicators -bool true
-  # Copy email addresses as `foo@example.com` instead of `Foo Bar <foo@example.com>` in Mail.app
-  defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
-  # Prevent Time Machine from prompting to use new hard drives as backup volume
-  defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
-  # Configure Apple Dock
-  defaults write com.apple.dock static-only -bool TRUE
-  defaults write com.apple.dock autohide -bool TRUE
-  defaults write com.apple.dock showhidden -bool TRUE
-  defaults write com.apple.dock tilesize 25
-  defaults write com.apple.dock mineffect suck
-
-  #Restart Apple Dock
-  killall Dock
-
-fi
-
-# @todo Reorganize this script
-# @body this script feels like it could be optimized significantly
-
-
-#Post tasks
-if [ -z "$CI" ]; then
-  echo "remove Temp YADM binary"
-  rm -f "$HOME/yadm"
-
-  echo "Setting remote url to git instead of http"
-  yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
-
-  echo "Changing shell to fish."
-  chsh -s "$(which fish)"
-fi
-
-# TODO: Install Fisher
-# TODO: Fisher Plugins: evanlucas/fish-kubectl-completions
+find -L "$BOOTSTRAP_D" -type f | sort | while IFS= read -r bootstrap; do
+    if [[ -x "$bootstrap" && ! "$bootstrap" =~ "##" && ! "$bootstrap" =~ "~$" && ! "$bootstrap" =~ ".fish"]]; then
+        if ! "$bootstrap"; then
+            echo "Error: bootstrap '$bootstrap' failed" >&2
+            exit 1
+        fi
+    fi
+done

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+echo "MacOS Detected...."
+echo "Skipping apt and dnf"
