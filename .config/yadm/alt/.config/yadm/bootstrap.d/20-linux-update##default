@@ -1,12 +1,12 @@
 #!/bin/bash
 
-Echo "Linux or WSL Detected...."
-Echo "Updating apt and dnf"
+echo "Linux or WSL Detected...."
+echo "Updating apt and dnf"
 
 if [ $commands[apt-get] ]; then
     echo "Updating apt"
     sudo apt-get update
-    sudo apt-get dist-upgrade -y --force-confoldfi
+    sudo apt-get dist-upgrade -y --force-confold
 fi
 if [ $commands[dnf] ]; then
   echo "Updating dnf"
