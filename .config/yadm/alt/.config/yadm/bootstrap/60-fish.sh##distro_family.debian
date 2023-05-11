@@ -1,0 +1,16 @@
+#!/bin/bash
+
+echo "Debian // Ubuntu Detected, installing fish shell from ppa"
+
+if [! $commands[add-apt-repository] ]; then
+  echo "add-apt-repository not found, installing"
+  sudo apt-get install software-properties-common -y
+fi
+
+if [ $commands[apt] ]; then
+  echo "Ubuntu // Debian expected"
+  sudo apt-add-repository ppa:fish-shell/release-3 -y
+  sudo apt-get update
+  sudo apt-get install fish -y
+fi
+

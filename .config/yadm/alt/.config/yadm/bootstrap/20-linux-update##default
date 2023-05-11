@@ -1,0 +1,14 @@
+#!/bin/bash
+
+Echo "Linux or WSL Detected...."
+Echo "Updating apt and dnf"
+
+if [ $commands[apt-get] ]; then
+    echo "Updating apt"
+    sudo apt-get update
+    sudo apt-get dist-upgrade -y --force-confoldfi
+fi
+if [ $commands[dnf] ]; then
+  echo "Updating dnf"
+  sudo dnf distro-sync -y
+fi
