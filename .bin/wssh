@@ -1,0 +1,8 @@
+#!/bin/bash
+
+if [ -n "$1" ];
+	then 
+		until nc -vzw 2 $1 22; do sleep 2; done
+	else
+		echo "Usage: wssh <hostname>"
+fi
