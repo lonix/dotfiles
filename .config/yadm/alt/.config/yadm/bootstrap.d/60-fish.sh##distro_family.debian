@@ -2,7 +2,7 @@
 
 echo "Debian // Ubuntu Detected, installing fish shell from ppa"
 
-if [! $commands[add-apt-repository] ]; then
+if [ ! $commands[add-apt-repository] ]; then
   echo "add-apt-repository not found, installing"
   sudo apt-get install software-properties-common -y
 fi
