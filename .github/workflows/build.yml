@@ -19,14 +19,10 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v2
 
-    - name: Install Xcode command line tools
-      run: xcode-select --install
-      if: runner.os == 'macos'
-
-
     - name: Install YADM
       run: |
         curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/yadm
+        ~/yadm version
 
     - name: Clone and bootstrap dotfiles
       run: |
