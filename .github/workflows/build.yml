@@ -28,10 +28,6 @@ jobs:
       run: |
         curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/yadm
 
-    - name: List files in home directory
-      run: |
-        ls -la ~
-        pwd
     - name: Clone and bootstrap dotfiles
       run: |
-        ./yadm clone https://github.com/lonix/dotfiles.git --bootstrap
+        ~/yadm clone https://github.com/lonix/dotfiles.git --bootstrap
