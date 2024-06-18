@@ -1,7 +1,8 @@
 ## Ansible Related
 *.retry
 
-
+#VS Code
+.vscode/
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
@@ -62,7 +63,7 @@ Temporary Items
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# Vagrant 
+# Vagrant
 .vagrant/
 # *.logs
 
