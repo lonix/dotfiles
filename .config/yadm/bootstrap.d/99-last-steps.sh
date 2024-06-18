@@ -1,3 +1,4 @@
+#!/bin/sh
 #Post tasks
 if [ -z "$CI" ]; then
   echo "remove Temp YADM binary"

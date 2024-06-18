@@ -3,5 +3,5 @@
 if [[ -z "$1" ]]; then
     docker run --rm -it alpine:latest /bin/sh -l
 else
-    docker run --rm -it $1 /bin/sh -l
+    docker run --rm -it "$1" /bin/sh -l
 fi

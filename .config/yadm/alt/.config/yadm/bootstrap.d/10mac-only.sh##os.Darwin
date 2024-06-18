@@ -9,13 +9,13 @@ fi
 
 # Install Brew packages
 
-if [ -f $HOME/.Brewfile ]; then
+if [ -f "$HOME"/.Brewfile ]; then
   echo "Installing Homebrew packages..."
-  brew bundle --file=$HOME/.Brewfile
+  brew bundle --file="$HOME"/.Brewfile
 fi
 
   #Set iterm2 config
-if [ -d "$HOME/.iterm2" ]; then
+if [ -d "$HOME"/.iterm2 ]; then
   echo "Setting iTerm preference folder"
   defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.iterm2"
   defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
