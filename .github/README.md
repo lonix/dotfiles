@@ -1,7 +1,7 @@
-# My Dotfiles Repo (Powered by YADM)
+# My Dotfiles repository (Powered by YADM)
 
 
-## New MacOS Host
+## New macOS Host
 
 ```BASH
 
