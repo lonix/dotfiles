@@ -16,14 +16,10 @@ jobs:
     env:
       CI: true
     steps:
-    - name: Checkout
-      uses: actions/checkout@v2
-
     - name: Install YADM
       run: |
         curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/yadm
         ~/yadm version
-
     - name: Clone and bootstrap dotfiles
       run: |
         ~/yadm clone https://github.com/lonix/dotfiles.git --bootstrap
