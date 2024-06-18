@@ -10,7 +10,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [macos-11, ubuntu-20.04, ubuntu-18.04]
+        os: [macos-latest, ubuntu-latest]
     env:
       CI: true
     steps:
