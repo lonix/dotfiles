@@ -19,4 +19,4 @@ jobs:
           curl -fLo yadm.sh https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x yadm.sh
           cat yadm.sh
       - name: Go bootstrap
-        run: ./yadm.sh clone https://github.com/lonix/dotfiles.git --bootstrap
+        run: ./yadm.sh clone "https://github.com/lonix/dotfiles.git" --bootstrap
