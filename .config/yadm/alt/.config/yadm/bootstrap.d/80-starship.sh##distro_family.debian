@@ -1,5 +1,12 @@
-
-#Install starship.rs from git
-
+# Install starship.rs from git
 echo "Installing Starship from git"
-sh -c "$(curl -fsSL https://starship.rs/install.sh)"
+
+# Check if curl is installed
+if ! command -v curl &> /dev/null
+then
+    echo "curl could not be found, please install it first"
+    exit
+fi
+
+# Download and run the installation script
+curl -fsSL https://starship.rs/install.sh | bash -s -- -y
