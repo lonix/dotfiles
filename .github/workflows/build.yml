@@ -21,7 +21,7 @@ jobs:
 
     - name: Install Xcode command line tools
       run: xcode-select --install
-      if: runner.os == 'macos-latest'
+      if: runner.os == 'macos'
 
 
     - name: Install YADM
