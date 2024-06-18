@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   build:
@@ -15,10 +16,18 @@ jobs:
     env:
       CI: true
     steps:
-      - name: fetch YADM
-        run: |
-          curl -fLo yadm.sh https://github.com/TheLocehiliosan/yadm/raw/master/yadm
-          chmod a+x yadm.sh
-          cat yadm.sh
-      - name: Go bootstrap
-        run: ./yadm.sh clone "https://github.com/lonix/dotfiles.git" --bootstrap
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Install Xcode command line tools
+      run: xcode-select --install
+      if: runner.os == 'macos-latest'
+
+
+    - name: Install YADM
+      run: |
+        curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/yadm
+
+    - name: Clone and bootstrap dotfiles
+      run: |
+        ./yadm clone https://github.com/lonix/dotfiles.git --bootstrap
