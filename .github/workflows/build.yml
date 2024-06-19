@@ -20,6 +20,9 @@ jobs:
       run: |
         curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/yadm
         ~/yadm version
-    - name: Clone and bootstrap dotfiles
+    - name: Clone dotfiles
       run: |
-        ~/yadm clone https://github.com/lonix/dotfiles.git --bootstrap
+        ~/yadm clone https://github.com/lonix/dotfiles.git
+    - name: run bootstrap script
+      run: |
+        ~/yadm bootstrap
