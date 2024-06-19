@@ -1,3 +1,4 @@
+#!/bin/sh
 # Install starship.rs from git
 echo "Installing Starship from git"
 

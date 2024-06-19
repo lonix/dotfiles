@@ -1,22 +1,39 @@
 #!/bin/bash
 
 # Check if script is run as root
-if [ "$EUID" -ne 0 ]
-  then echo "Please run as root"
+if [ "$EUID" -ne 0 ]; then
+  echo "Please run as root"
   exit
 fi
 
 # Check if necessary commands are available
-command -v apt-get >/dev/null 2>&1 || { echo >&2 "apt-get is required but it's not installed.  Aborting."; exit 1; }
-command -v add-apt-repository >/dev/null 2>&1 || { echo >&2 "add-apt-repository is required but it's not installed.  Installing now."; sudo apt-get install software-properties-common -y; }
+if ! command -v apt-get >/dev/null 2>&1; then
+  echo "apt-get is required but it's not installed. Aborting."
+  exit 1
+fi
 
-echo "Debian // Ubuntu Detected, installing fish shell from ppa"
+if ! command -v add-apt-repository >/dev/null 2>&1; then
+  echo "add-apt-repository is required but it's not installed. Installing now."
+  sudo apt-get install software-properties-common -y
+fi
 
-# Add the fish shell repository
-sudo add-apt-repository ppa:fish-shell/release-3 -y
+echo "Debian // Ubuntu Detected, preparing to install fish shell"
 
-# Update the package list
+# Check if the fish shell repository is already added
+if ! grep -q "^deb .*/fish-shell/release-3" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+  echo "Adding the fish shell repository"
+  sudo add-apt-repository ppa:fish-shell/release-3 -y
+else
+  echo "Fish shell repository already added"
+fi
+
+echo "Updating the package list"
 sudo apt-get update
 
-# Install the fish shell
-sudo apt-get install fish -y
+# Check if the fish shell is already installed
+if ! command -v fish >/dev/null 2>&1; then
+  echo "Installing the fish shell"
+  sudo apt-get install fish -y
+else
+  echo "Fish shell is already installed"
+fi
