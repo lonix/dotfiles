@@ -1,29 +1,193 @@
 #!/bin/bash
 
-# This script executes all executable files (excluding templates, editor backups, and .fish files)
-# in the ~/.config/yadm/bootstrap.d directory when run.
+# This script is used to setup a new computer with the dotfiles and other needed applications.
 
-set -eu
 
-# Define the directory to look for bootstrap executables
-bootstrap_dir="${BASH_SOURCE[0]}.d"
+#!/bin/bash
 
-# Check if the bootstrap directory exists
-if [[ ! -d "$bootstrap_dir" ]]; then
-  echo "Error: bootstrap directory '$bootstrap_dir' not found" >&2
-  exit 1
+# Install Homebrew if not present
+
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  if ! which brew > /dev/null; then
+    echo "Installing Homebrew..."
+    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+  fi
 fi
 
-# Find and sort all files in the bootstrap directory
-find -L "$bootstrap_dir" -type f | sort | while IFS= read -r file; do
-  # Check if the file is executable and does not match the exclusion patterns
-  if [[ -x "$file" && ! "$file" =~ "##" && ! "$file" =~ "~$" && ! "$file" =~ .fish ]]; then
-    # Print the name of the file to be executed
-    echo "About to execute: $file"
-    # Try to execute the file, and exit with an error if it fails
-    if ! "$file"; then
-      echo "Error: bootstrap '$file' failed" >&2
-      exit 1
-    fi
+# Install Brew packages
+if [[ "$OSTYPE" == "darwin"* ]] && [[ -z "$CI" ]]; then
+  if [ -f "$HOME"/.Brewfile ]; then
+    echo "Installing Homebrew packages..."
+    brew bundle --file="$HOME"/.Brewfile
   fi
-done
+fi
+
+  #Set iterm2 config
+if [[ "$OSTYPE" == "darwin"* ]] && [[ -z "$CI" ]]; then
+  if [ -d "$HOME"/.iterm2 ]; then
+    echo "Setting iTerm preference folder"
+    defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.iterm2"
+    defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+  fi
+fi
+
+
+
+if [[ "$OSTYPE" == "linux-gnu"* ]] || [[ "$OSTYPE" == "wsl"* ]]; then
+  echo "Linux or WSL Detected...."
+
+  # Check if necessary commands are available
+  if ! command -v apt-get >/dev/null 2>&1; then
+    echo "apt-get is required but it's not installed. Aborting."
+    exit 1
+  fi
+
+  echo "Updating apt packages..."
+  sudo apt-get update
+
+  echo "Upgrading distribution..."
+  sudo apt-get dist-upgrade -y --force-confold
+
+  echo "Checking if necessary packages are installed..."
+
+  # Check if git is installed
+  if ! command -v git >/dev/null 2>&1; then
+    echo "Git is not installed. Installing now..."
+    sudo apt-get install -y git
+  else
+    echo "Git is already installed"
+  fi
+
+  # Check if curl is installed
+  if ! command -v curl >/dev/null 2>&1; then
+    echo "Curl is not installed. Installing now..."
+    sudo apt-get install -y curl
+  else
+    echo "Curl is already installed"
+  fi
+
+  # Check if wget is installed
+  if ! command -v wget >/dev/null 2>&1; then
+    echo "Wget is not installed. Installing now..."
+    sudo apt-get install -y wget
+  else
+    echo "Wget is already installed"
+  fi
+fi
+
+echo "Installing/updateing YADM (sudo is required)"
+curl -fLo ~/.bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm &&  chmod a+x ~/.bin/yadm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+if [[ "$OSTYPE" == "darwin"* ]] && [[ -z "$CI" ]]; then
+  #Configure macos defaults
+  echo Configuring Macos will kill dock when done.
+
+# Show remaining battery time; hide percentage
+  defaults write com.apple.menuextra.battery ShowPercent -string "NO"
+  defaults write com.apple.menuextra.battery ShowTime -string "YES"
+
+  # Expand save panel by default
+  defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+
+  # Expand print panel by default
+  defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+
+  # Disable opening and closing window animations
+  defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
+
+  # Disable Mission Control Animations
+  defaults write com.apple.dock expose-animation-duration -int 0
+
+  # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
+  defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+
+  # Disable auto-correct
+  defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+
+  # Require password immediately after sleep or screen saver begins
+  defaults write com.apple.screensaver askForPassword -int 1
+  defaults write com.apple.screensaver askForPasswordDelay -int 0
+
+  # Show status bar in Finder
+  defaults write com.apple.finder ShowStatusBar -bool true
+
+  # Allow text selection in Quick Look
+  defaults write com.apple.finder QLEnableTextSelection -bool true
+
+  # Display full POSIX path as Finder window title
+  defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+
+  # Avoid creating .DS_Store files on network volumes
+  defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+
+  # Disable the warning when changing a file extension
+  defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+
+  # Disable the warning before emptying the Trash
+  defaults write com.apple.finder WarnOnEmptyTrash -bool false
+
+  # Empty Trash securely by default
+  defaults write com.apple.finder EmptyTrashSecurely -bool true
+
+  # Show indicator lights for open applications in the Dock
+  defaults write com.apple.dock show-process-indicators -bool true
+
+  # Copy email addresses as `foo@example.com` instead of `Foo Bar <foo@example.com>` in Mail.app
+  defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
+
+  # Prevent Time Machine from prompting to use new hard drives as backup volume
+  defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+
+  # Configure Apple Dock
+  defaults write com.apple.dock static-only -bool TRUE
+  defaults write com.apple.dock autohide -bool TRUE
+  defaults write com.apple.dock showhidden -bool TRUE
+  defaults write com.apple.dock tilesize 25
+  defaults write com.apple.dock mineffect suck
+
+  #Restart Apple Dock
+  killall Dock
+fi
