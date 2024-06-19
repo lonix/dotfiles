@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 # This script executes all executable files (excluding templates, editor backups, and .fish files)
 # in the ~/.config/yadm/bootstrap.d directory when run.
