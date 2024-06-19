@@ -55,7 +55,7 @@
 [core]
     pager = less -FRSX
     whitespace = fix,-indent-with-non-tab,trailing-space,cr-at-eol
-	excludesFile = ~/.gitignore
+    excludesFile = ~/.gitignore
 
 [diff]
     tool = vimdiff
@@ -144,7 +144,7 @@
     rea = remote add
     rex = remote rm
     rem = remote rename
-	ignore = "!gi() { curl -sL https://www.gitignore.io/api/$@ ;}; gi"
+    ignore = "!gi() { curl -sL https://www.gitignore.io/api/$@ ;}; gi"
 
 [push]
     default = matching
