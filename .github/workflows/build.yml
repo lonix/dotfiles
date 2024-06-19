@@ -5,6 +5,9 @@ on:
   push:
     branches:
       - master
+  pull_request: # Add pull_request event
+    branches:
+      - master
   workflow_dispatch:
 
 jobs:
