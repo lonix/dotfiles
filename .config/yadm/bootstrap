@@ -2,9 +2,6 @@
 
 # This script is used to setup a new computer with the dotfiles and other needed applications.
 
-
-#!/bin/bash
-
 # Install Homebrew if not present
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -57,6 +54,32 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] || [[ "$OSTYPE" == "wsl"* ]]; then
   else
     echo "Git is already installed"
   fi
+  # Check if software-properties-common is installed
+  if ! command -v add-apt-repository >/dev/null 2>&1; then
+  echo "add-apt-repository is required but it's not installed. Installing now."
+  sudo apt-get install software-properties-common -y
+fi
+
+if ! grep -q "^deb .*/fish-shell/release-3" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+  echo "Adding the fish shell repository"
+  sudo add-apt-repository ppa:fish-shell/release-3 -y
+  echo "Updating the package list"
+  sudo apt-get update
+else
+  echo "Fish shell repository already added"
+fi
+if ! command -v fish >/dev/null 2>&1; then
+  echo "Installing the fish shell"
+  sudo apt-get install fish -y
+else
+  echo "Fish shell is already installed"
+fi
+
+  # Download and run the installation script
+  echo "Installing Starship..."
+  curl -fsSL https://starship.rs/install.sh | sh -s -- -y
+
+
 
   # Check if curl is installed
   if ! command -v curl >/dev/null 2>&1; then
@@ -105,21 +128,16 @@ curl -fLo ~/.bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm &&
 
 
 
+if [ -z "$CI" ]; then
+  echo "remove Temp YADM binary"
+  rm -f "$HOME/yadm"
 
+  echo "Setting remote url to git instead of http"
+  yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+  echo "Changing shell to fish."
+  chsh -s "$(which fish)"
+fi
 
 if [[ "$OSTYPE" == "darwin"* ]] && [[ -z "$CI" ]]; then
   #Configure macos defaults
@@ -191,3 +209,6 @@ if [[ "$OSTYPE" == "darwin"* ]] && [[ -z "$CI" ]]; then
   #Restart Apple Dock
   killall Dock
 fi
+
+
+echo "Done!"
