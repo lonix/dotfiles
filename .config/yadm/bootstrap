@@ -18,6 +18,8 @@ fi
 find -L "$bootstrap_dir" -type f | sort | while IFS= read -r file; do
   # Check if the file is executable and does not match the exclusion patterns
   if [[ -x "$file" && ! "$file" =~ "##" && ! "$file" =~ "~$" && ! "$file" =~ .fish ]]; then
+    # Print the name of the file to be executed
+    echo "About to execute: $file"
     # Try to execute the file, and exit with an error if it fails
     if ! "$file"; then
       echo "Error: bootstrap '$file' failed" >&2
