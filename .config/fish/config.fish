@@ -9,6 +9,7 @@ set -gx GPG_TTY (tty)
 
 #fish path
 fish_add_path -p ~/.bin
+fish_add_path -p ~/go/bin
 fish_add_path /usr/local/sbin
 
 #starship init
