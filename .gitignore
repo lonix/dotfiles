@@ -3,6 +3,11 @@
 
 #VS Code
 .vscode/
+
+# Ignore some select binarys from ever being added to the repo
+.bin/yadm
+.bin/bw
+
 # Windows thumbnail cache files
 Thumbs.db
 ehthumbs.db
