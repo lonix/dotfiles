@@ -1,9 +1,10 @@
-#!/bin/sh
+#!/bin/bash
+
 # Install starship.rs from git
 echo "Installing Starship from git"
 
 # Check if curl is installed
-if ! command -v curl &> /dev/null
+if ! command -v curl > /dev/null 2>&1
 then
     echo "curl could not be found, please install it first"
     exit
