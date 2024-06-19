@@ -1,5 +1,5 @@
 #!/bin/sh
- echo "Current hostname: $(hostname)"
+echo "Current hostname: $(hostname)"
 if [ "$1" ]; then
   scutil --set ComputerName "$1"
   scutil --set LocalHostName "$1"
