@@ -1,11 +1,10 @@
----
 name: "YADM bootstrap"
 
 on:
   push:
     branches:
       - master
-  pull_request: # Add pull_request event
+  pull_request:
     branches:
       - master
   workflow_dispatch:
@@ -22,15 +21,18 @@ jobs:
     env:
       CI: true
     steps:
-    - name: Install YADM
-      run: |
-        curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/yadm
-        ~/yadm version
-    - name: Clone dotfiles
-      run: |
-        cd ~
-        ~/yadm clone https://github.com/lonix/dotfiles.git
-    - name: run bootstrap script
-      run: |
-        cd ~
-        ~/yadm bootstrap
+      - name: Install YADM
+        run: |
+          curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
+          chmod a+x ~/yadm
+          ~/yadm version
+
+      - name: Clone dotfiles
+        run: |
+          cd ~
+          ~/yadm clone https://github.com/lonix/dotfiles.git
+
+      - name: Run bootstrap script
+        run: |
+          cd ~
+          ~/yadm bootstrap

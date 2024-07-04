@@ -8,8 +8,8 @@
 if CI; then
 echo "CI environment detected. Skipping some steps..."
 echo "OS Type: $OSTYPE"
-echo Time: $(date)
-echo User Context: $(whoami)
+echo "Time: $(date)"
+echo "User Context: $(whoami)"
 fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
