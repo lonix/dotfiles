@@ -28,7 +28,9 @@ jobs:
         ~/yadm version
     - name: Clone dotfiles
       run: |
+        cd ~
         ~/yadm clone https://github.com/lonix/dotfiles.git
     - name: run bootstrap script
       run: |
+        cd ~
         ~/yadm bootstrap
