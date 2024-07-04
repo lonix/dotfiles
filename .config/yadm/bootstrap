@@ -29,13 +29,12 @@ fi
 
 # Install Brew packages
 if [[ "$OSTYPE" == "darwin"* ]]; then
-  if ! ci_skip; then
-    if [ -f "$HOME/.Brewfile" ]; then
-      echo "Installing Homebrew packages..."
-      brew bundle --file="$HOME/.Brewfile"
-    fi
+  if [ -f "$HOME/.Brewfile" ]; then
+    echo "Installing Homebrew packages..."
+    brew bundle --file="$HOME/.Brewfile"
   fi
 fi
+
 
 # Set iTerm2 config
 if [[ "$OSTYPE" == "darwin"* ]]; then
