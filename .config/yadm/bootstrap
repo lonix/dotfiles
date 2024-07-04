@@ -3,6 +3,14 @@
 # This script is used to setup a new computer with the dotfiles and other needed applications.
 
 # Install Homebrew if not present
+# Prints the OS type detected
+
+if CI; then
+echo "CI environment detected. Skipping some steps..."
+echo "OS Type: $OSTYPE"
+echo Time: $(date)
+echo User Context: $(whoami)
+fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   if ! which brew > /dev/null; then
