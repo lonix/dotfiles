@@ -10,40 +10,43 @@ ci_skip() {
     return 0
   else
     return 1
+  fi
 }
 
 if ci_skip; then
-echo "CI environment detected. Skipping some steps..."
-echo "OS Type: $OSTYPE"
-echo "Time: $(date)"
-echo "User Context: $(whoami)"
+  echo "CI environment detected. Skipping some steps..."
+  echo "OS Type: $OSTYPE"
+  echo "Time: $(date)"
+  echo "User Context: $(whoami)"
 fi
 
 if [[ "$OSTYPE" == "darwin"* ]]; then
   if ! which brew > /dev/null; then
     echo "Installing Homebrew..."
-    ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
   fi
 fi
 
 # Install Brew packages
-if [[ "$OSTYPE" == "darwin"* ]] && [[ -z ci_skip ]]; then
-  if [ -f "$HOME"/.Brewfile ]; then
-    echo "Installing Homebrew packages..."
-    brew bundle --file="$HOME"/.Brewfile
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  if ! ci_skip; then
+    if [ -f "$HOME/.Brewfile" ]; then
+      echo "Installing Homebrew packages..."
+      brew bundle --file="$HOME/.Brewfile"
+    fi
   fi
 fi
 
-  #Set iterm2 config
-if [[ "$OSTYPE" == "darwin"* ]] && [[ -z ci_skip ]]; then
-  if [ -d "$HOME"/.iterm2 ]; then
-    echo "Setting iTerm preference folder"
-    defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.iterm2"
-    defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+# Set iTerm2 config
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  if ! ci_skip; then
+    if [ -d "$HOME/.iterm2" ]; then
+      echo "Setting iTerm preference folder"
+      defaults write com.googlecode.iterm2 PrefsCustomFolder "$HOME/.iterm2"
+      defaults write com.googlecode.iterm2 LoadPrefsFromCustomFolder -bool true
+    fi
   fi
 fi
-
-
 
 if [[ "$OSTYPE" == "linux-gnu"* ]] || [[ "$OSTYPE" == "wsl"* ]]; then
   echo "Linux or WSL Detected...."
@@ -69,32 +72,32 @@ if [[ "$OSTYPE" == "linux-gnu"* ]] || [[ "$OSTYPE" == "wsl"* ]]; then
   else
     echo "Git is already installed"
   fi
+
   # Check if software-properties-common is installed
   if ! command -v add-apt-repository >/dev/null 2>&1; then
-  echo "add-apt-repository is required but it's not installed. Installing now."
-  sudo apt-get install software-properties-common -y
-fi
+    echo "add-apt-repository is required but it's not installed. Installing now."
+    sudo apt-get install software-properties-common -y
+  fi
 
-if ! grep -q "^deb .*/fish-shell/release-3" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
-  echo "Adding the fish shell repository"
-  sudo add-apt-repository ppa:fish-shell/release-3 -y
-  echo "Updating the package list"
-  sudo apt-get update
-else
-  echo "Fish shell repository already added"
-fi
-if ! command -v fish >/dev/null 2>&1; then
-  echo "Installing the fish shell"
-  sudo apt-get install fish -y
-else
-  echo "Fish shell is already installed"
-fi
+  if ! grep -q "^deb .*/fish-shell/release-3" /etc/apt/sources.list /etc/apt/sources.list.d/*; then
+    echo "Adding the fish shell repository"
+    sudo add-apt-repository ppa:fish-shell/release-3 -y
+    echo "Updating the package list"
+    sudo apt-get update
+  else
+    echo "Fish shell repository already added"
+  fi
+
+  if ! command -v fish >/dev/null 2>&1; then
+    echo "Installing the fish shell"
+    sudo apt-get install fish -y
+  else
+    echo "Fish shell is already installed"
+  fi
 
   # Download and run the installation script
   echo "Installing Starship..."
   curl -fsSL https://starship.rs/install.sh | sh -s -- -y
-
-
 
   # Check if curl is installed
   if ! command -v curl >/dev/null 2>&1; then
@@ -113,117 +116,91 @@ fi
   fi
 fi
 
-echo "Installing/updateing YADM (sudo is required)"
-curl -fLo ~/.bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm &&  chmod a+x ~/.bin/yadm
+echo "Installing/updating YADM (sudo is required)"
+curl -fLo ~/.bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm && chmod a+x ~/.bin/yadm
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if [ -z ci_skip ]; then
-  echo "remove Temp YADM binary"
+if ! ci_skip; then
+  echo "Removing temporary YADM binary"
   rm -f "$HOME/yadm"
 
-  echo "Setting remote url to git instead of http"
+  echo "Setting remote URL to git instead of http"
   yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
 
   echo "Changing shell to fish."
   chsh -s "$(which fish)"
 fi
 
-if [[ "$OSTYPE" == "darwin"* ]] & [[ -z ci_skip ]]; then
-  #Configure macos defaults
-  echo Configuring Macos will kill dock when done.
+if [[ "$OSTYPE" == "darwin"* ]]; then
+  if ! ci_skip; then
+    # Configure macOS defaults
+    echo "Configuring macOS will kill dock when done."
 
-# Show remaining battery time; hide percentage
-  defaults write com.apple.menuextra.battery ShowPercent -string "NO"
-  defaults write com.apple.menuextra.battery ShowTime -string "YES"
+    # Show remaining battery time; hide percentage
+    defaults write com.apple.menuextra.battery ShowPercent -string "NO"
+    defaults write com.apple.menuextra.battery ShowTime -string "YES"
 
-  # Expand save panel by default
-  defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
+    # Expand save panel by default
+    defaults write NSGlobalDomain NSNavPanelExpandedStateForSaveMode -bool true
 
-  # Expand print panel by default
-  defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
+    # Expand print panel by default
+    defaults write NSGlobalDomain PMPrintingExpandedStateForPrint -bool true
 
-  # Disable opening and closing window animations
-  defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
+    # Disable opening and closing window animations
+    defaults write NSGlobalDomain NSAutomaticWindowAnimationsEnabled -bool false
 
-  # Disable Mission Control Animations
-  defaults write com.apple.dock expose-animation-duration -int 0
+    # Disable Mission Control Animations
+    defaults write com.apple.dock expose-animation-duration -int 0
 
-  # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
-  defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
+    # Enable full keyboard access for all controls (e.g. enable Tab in modal dialogs)
+    defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 
-  # Disable auto-correct
-  defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
+    # Disable auto-correct
+    defaults write NSGlobalDomain NSAutomaticSpellingCorrectionEnabled -bool false
 
-  # Require password immediately after sleep or screen saver begins
-  defaults write com.apple.screensaver askForPassword -int 1
-  defaults write com.apple.screensaver askForPasswordDelay -int 0
+    # Require password immediately after sleep or screen saver begins
+    defaults write com.apple.screensaver askForPassword -int 1
+    defaults write com.apple.screensaver askForPasswordDelay -int 0
 
-  # Show status bar in Finder
-  defaults write com.apple.finder ShowStatusBar -bool true
+    # Show status bar in Finder
+    defaults write com.apple.finder ShowStatusBar -bool true
 
-  # Allow text selection in Quick Look
-  defaults write com.apple.finder QLEnableTextSelection -bool true
+    # Allow text selection in Quick Look
+    defaults write com.apple.finder QLEnableTextSelection -bool true
 
-  # Display full POSIX path as Finder window title
-  defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
+    # Display full POSIX path as Finder window title
+    defaults write com.apple.finder _FXShowPosixPathInTitle -bool true
 
-  # Avoid creating .DS_Store files on network volumes
-  defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+    # Avoid creating .DS_Store files on network volumes
+    defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 
-  # Disable the warning when changing a file extension
-  defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+    # Disable the warning when changing a file extension
+    defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
 
-  # Disable the warning before emptying the Trash
-  defaults write com.apple.finder WarnOnEmptyTrash -bool false
+    # Disable the warning before emptying the Trash
+    defaults write com.apple.finder WarnOnEmptyTrash -bool false
 
-  # Empty Trash securely by default
-  defaults write com.apple.finder EmptyTrashSecurely -bool true
+    # Empty Trash securely by default
+    defaults write com.apple.finder EmptyTrashSecurely -bool true
 
-  # Show indicator lights for open applications in the Dock
-  defaults write com.apple.dock show-process-indicators -bool true
+    # Show indicator lights for open applications in the Dock
+    defaults write com.apple.dock show-process-indicators -bool true
 
-  # Copy email addresses as `foo@example.com` instead of `Foo Bar <foo@example.com>` in Mail.app
-  defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
+    # Copy email addresses as `foo@example.com` instead of `Foo Bar <foo@example.com>` in Mail.app
+    defaults write com.apple.mail AddressesIncludeNameOnPasteboard -bool false
 
-  # Prevent Time Machine from prompting to use new hard drives as backup volume
-  defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
+    # Prevent Time Machine from prompting to use new hard drives as backup volume
+    defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
-  # Configure Apple Dock
-  defaults write com.apple.dock static-only -bool TRUE
-  defaults write com.apple.dock autohide -bool TRUE
-  defaults write com.apple.dock showhidden -bool TRUE
-  defaults write com.apple.dock tilesize 25
-  defaults write com.apple.dock mineffect suck
+    # Configure Apple Dock
+    defaults write com.apple.dock static-only -bool TRUE
+    defaults write com.apple.dock autohide -bool TRUE
+    defaults write com.apple.dock showhidden -bool TRUE
+    defaults write com.apple.dock tilesize -int 25
+    defaults write com.apple.dock mineffect -string "suck"
 
-  #Restart Apple Dock
-  killall Dock
+    # Restart Apple Dock
+    killall Dock
+  fi
 fi
-
 
 echo "Done!"
