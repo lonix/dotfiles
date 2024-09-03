@@ -29,7 +29,7 @@
     pager = true
     showbranch = auto
     status = auto
-    ui = always
+#    ui = always
 
 [color "interactive"]
     error = red bold
@@ -63,8 +63,8 @@
 [difftool]
     prompt = false
 
-[merge]
-    tool = vimdiff
+#[merge]
+#    tool = vimdiff
 
 [alias]
     # branch
