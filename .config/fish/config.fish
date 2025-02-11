@@ -16,6 +16,12 @@ fish_add_path -p ~/.local/bin
 #starship init
 starship init fish | source
 
+#tailscale completion
+if type -q tailscale
+  tailscale completion fish | source
+end
+
+#Infracost completion
 if type -q infracost
   infracost completion --shell fish | source
 end
