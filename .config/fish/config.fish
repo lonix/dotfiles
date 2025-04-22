@@ -11,6 +11,7 @@ set -gx GPG_TTY (tty)
 fish_add_path -p ~/.bin
 fish_add_path -p ~/go/bin
 fish_add_path /opt/homebrew/bin
+fish_add_path /opt/homebrew/sbin
 fish_add_path /usr/local/sbin
 fish_add_path -p ~/.local/bin
 #starship init
@@ -25,6 +26,8 @@ end
 if type -q infracost
   infracost completion --shell fish | source
 end
+
+
 
 #source iterm2 shell integration if it exists
 test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
