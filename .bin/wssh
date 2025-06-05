@@ -1,7 +1,41 @@
 #!/bin/bash
 
-if [ -n "$1" ]; then
-  until nc -vzw 2 "$1" 22; do sleep 2; done
+RECONNECT=false
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        -r|--reconnect)
+            RECONNECT=true
+            shift
+            ;;
+        *)
+            HOSTNAME="$1"
+            shift
+            ;;
+    esac
+done
+
+if [ -n "$HOSTNAME" ]; then
+    while true; do
+        # Wait for the host to be available
+        until nc -vzw 2 "$HOSTNAME" 22; do
+            echo "Waiting for $HOSTNAME to be available..."
+            sleep 2
+        done
+
+        echo "Connecting to $HOSTNAME..."
+        ssh "$HOSTNAME"
+
+        # If reconnect is enabled, wait and try again
+        if [ "$RECONNECT" = true ]; then
+            echo "Connection lost. Reconnecting in 5 seconds..."
+            sleep 5
+        else
+            break
+        fi
+    done
 else
-  echo "Usage: wssh <hostname>"
+    echo "Usage: wssh [-r|--reconnect] <hostname>"
+    echo "  -r, --reconnect    Automatically reconnect if connection is lost"
 fi

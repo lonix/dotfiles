@@ -1,16 +1,151 @@
 #!/bin/bash
-if [[ $(uname) == "Darwin" ]]; then
-  brew update
-  brew upgrade
-  brew cu -y
-  fisher update
-  mas upgrade
-  yadm add -u
-  yadm commit -m "ran mac-update"
-  yadm encrypt
-  yadm add -u
-  yadm commit -m "updated secrets"
-  yadm push
-else
-echo "This is not a mac"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+NC='\033[0m' # No Color
+
+# Log file
+LOG_FILE="$HOME/.mac-update.log"
+DRY_RUN=false
+SKIP_BREW=false
+SKIP_CASK=false
+SKIP_FISHER=false
+SKIP_MAS=false
+SKIP_YADM=false
+
+# Function to log messages
+log() {
+    local message="$1"
+    local timestamp=$(date '+%Y-%m-%d %H:%M:%S')
+    echo -e "${YELLOW}[$timestamp]${NC} $message" | tee -a "$LOG_FILE"
+}
+
+# Function to handle errors
+handle_error() {
+    local error_msg="$1"
+    log "${RED}Error: $error_msg${NC}"
+    exit 1
+}
+
+# Function to run commands safely
+run_command() {
+    local cmd="$1"
+    local description="$2"
+
+    log "${GREEN}Running: $description${NC}"
+    if [ "$DRY_RUN" = true ]; then
+        log "${YELLOW}[DRY RUN] Would execute: $cmd${NC}"
+        return 0
+    fi
+
+    if eval "$cmd"; then
+        log "${GREEN}Successfully completed: $description${NC}"
+    else
+        handle_error "Failed to execute: $description"
+    fi
+}
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case $1 in
+        --dry-run)
+            DRY_RUN=true
+            shift
+            ;;
+        --skip-brew)
+            SKIP_BREW=true
+            shift
+            ;;
+        --skip-cask)
+            SKIP_CASK=true
+            shift
+            ;;
+        --skip-fisher)
+            SKIP_FISHER=true
+            shift
+            ;;
+        --skip-mas)
+            SKIP_MAS=true
+            shift
+            ;;
+        --skip-yadm)
+            SKIP_YADM=true
+            shift
+            ;;
+        --help)
+            echo "Usage: mac-update [options]"
+            echo "Options:"
+            echo "  --dry-run        Show what would be updated without making changes"
+            echo "  --skip-brew      Skip Homebrew updates"
+            echo "  --skip-cask      Skip Cask updates"
+            echo "  --skip-fisher    Skip Fisher updates"
+            echo "  --skip-mas       Skip Mac App Store updates"
+            echo "  --skip-yadm      Skip YADM updates"
+            echo "  --help           Show this help message"
+            exit 0
+            ;;
+        *)
+            echo "Unknown option: $1"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
+    esac
+done
+
+# Check if running on macOS
+if [[ $(uname) != "Darwin" ]]; then
+    handle_error "This script is only for macOS"
+fi
+
+# Create backup of important files
+if [ "$DRY_RUN" = false ]; then
+    log "Creating backup of important files..."
+    backup_dir="$HOME/.mac-update-backup-$(date +%Y%m%d-%H%M%S)"
+    mkdir -p "$backup_dir"
+    cp -r ~/.config/fish "$backup_dir/" 2>/dev/null
+    cp -r ~/.config/yadm "$backup_dir/" 2>/dev/null
+fi
+
+# Homebrew updates
+if [ "$SKIP_BREW" = false ]; then
+    run_command "brew update" "Updating Homebrew"
+    run_command "brew upgrade" "Upgrading Homebrew packages"
+fi
+
+# Cask updates
+if [ "$SKIP_CASK" = false ]; then
+    run_command "brew cu -y" "Upgrading Cask applications"
+fi
+
+# Fisher updates
+if [ "$SKIP_FISHER" = false ]; then
+    run_command "fisher update" "Updating Fisher packages"
+fi
+
+# Mac App Store updates
+if [ "$SKIP_MAS" = false ]; then
+    run_command "mas upgrade" "Upgrading Mac App Store applications"
+fi
+
+# YADM updates
+if [ "$SKIP_YADM" = false ]; then
+    run_command "yadm add -u" "Staging YADM changes"
+    run_command "yadm commit -m \"ran mac-update $(date +%Y-%m-%d)\"" "Committing YADM changes"
+    run_command "yadm encrypt" "Encrypting YADM secrets"
+    run_command "yadm add -u" "Staging encrypted YADM changes"
+    run_command "yadm commit -m \"updated secrets $(date +%Y-%m-%d)\"" "Committing encrypted YADM changes"
+    run_command "yadm push" "Pushing YADM changes"
+fi
+
+# Cleanup
+if [ "$DRY_RUN" = false ]; then
+    run_command "brew cleanup" "Cleaning up Homebrew"
+fi
+
+log "${GREEN}Update process completed successfully!${NC}"
+log "Log file: $LOG_FILE"
+if [ "$DRY_RUN" = false ]; then
+    log "Backup directory: $backup_dir"
 fi
