@@ -7,15 +7,20 @@ end
 #GPG Hack
 set -gx GPG_TTY (tty)
 
-#fish path
+# fish path
 fish_add_path -p ~/.bin
 fish_add_path -p ~/go/bin
 fish_add_path /opt/homebrew/bin
 fish_add_path /opt/homebrew/sbin
 fish_add_path /usr/local/sbin
 fish_add_path -p ~/.local/bin
-#starship init
+# starship init
 starship init fish | source
+
+# Simple aliases
+
+alias sl="ls"
+
 
 #tailscale completion
 if type -q tailscale
