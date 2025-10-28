@@ -54,25 +54,37 @@ if test -d $HOME/.bin/completions/fish
     end
 end
 
-# Docker completions cache refresh function
-function refresh_docker_completions
-    # Refresh Docker image completions
-    docker images --format '{{.Repository}}:{{.Tag}}' >$HOME/.bin/completions/fish/docker_images.cache
-    # Refresh Docker container completions
-    docker ps --format '{{.Names}}' >$HOME/.bin/completions/fish/docker_containers.cache
-end
 
-# Refresh Docker completions every hour
-function __refresh_docker_completions_timer --on-event fish_prompt
-    if test -f $HOME/.bin/completions/fish/docker_completions_timestamp
-        set timestamp (cat $HOME/.bin/completions/fish/docker_completions_timestamp)
-        set current_time (date +%s)
-        if test (math $current_time - $timestamp) -gt 3600
-            refresh_docker_completions
-            echo $current_time >$HOME/.bin/completions/fish/docker_completions_timestamp
+# Docker features only if docker is available
+if type -q docker
+    # Ensure completions directory exists before writing cache
+    function ensure_docker_completions_dir
+        if not test -d $HOME/.bin/completions/fish
+            mkdir -p $HOME/.bin/completions/fish
         end
-    else
-        refresh_docker_completions
-        date +%s >$HOME/.bin/completions/fish/docker_completions_timestamp
+    end
+
+    # Docker completions cache refresh function
+    function refresh_docker_completions
+        ensure_docker_completions_dir
+        # Refresh Docker image completions
+        docker images --format '{{.Repository}}:{{.Tag}}' >$HOME/.bin/completions/fish/docker_images.cache
+        # Refresh Docker container completions
+        docker ps --format '{{.Names}}' >$HOME/.bin/completions/fish/docker_containers.cache
+    end
+
+    # Refresh Docker completions every hour
+    function __refresh_docker_completions_timer --on-event fish_prompt
+        if test -f $HOME/.bin/completions/fish/docker_completions_timestamp
+            set timestamp (cat $HOME/.bin/completions/fish/docker_completions_timestamp)
+            set current_time (date +%s)
+            if test (math $current_time - $timestamp) -gt 3600
+                refresh_docker_completions
+                echo $current_time >$HOME/.bin/completions/fish/docker_completions_timestamp
+            end
+        else
+            refresh_docker_completions
+            date +%s >$HOME/.bin/completions/fish/docker_completions_timestamp
+        end
     end
 end
