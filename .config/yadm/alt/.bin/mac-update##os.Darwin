@@ -90,7 +90,8 @@ command_exists() {
 cleanup_old_backups() {
     log "Cleaning up old backups (keeping last 5)..."
     local backup_pattern="$HOME/.mac-update-backup-*"
-    # shellcheck disable=SC2012
+    # Note: $backup_pattern is intentionally unquoted to allow glob expansion
+    # shellcheck disable=SC2012,SC2086
     ls -dt $backup_pattern 2>/dev/null | tail -n +6 | while read -r old_backup; do
         log_verbose "Removing old backup: $old_backup"
         rm -rf "$old_backup"
@@ -127,7 +128,7 @@ print_summary() {
     
     log "${GREEN}═══════════════════════════════════════════════════${NC}"
     log "Log file: $LOG_FILE"
-    if [ "$DRY_RUN" = false ] && [ "$SKIP_BACKUP" = false ]; then
+    if [ "$DRY_RUN" = false ] && [ "$SKIP_BACKUP" = false ] && [ -n "$backup_dir" ]; then
         log "Backup directory: $backup_dir"
     fi
 }
@@ -284,23 +285,27 @@ fi
 if [ "$SKIP_YADM" = false ]; then
     # Check if there are any changes to commit
     if [ "$DRY_RUN" = false ]; then
-        yadm add -u >> "$LOG_FILE" 2>&1
-        if yadm diff --cached --quiet; then
-            log "${YELLOW}No YADM changes to commit${NC}"
-            UPDATES_SKIPPED+=("YADM commit (no changes)")
-        else
-            run_command "yadm commit -m \"ran mac-update $(date +%Y-%m-%d)\"" "Committing YADM changes" true
-            
-            # Encrypt secrets if yadm encrypt is configured
-            if yadm config --get-all yadm.encrypt-program >/dev/null 2>&1; then
-                run_command "yadm encrypt" "Encrypting YADM secrets" true
-                run_command "yadm add -u" "Staging encrypted YADM changes" true
-                if ! yadm diff --cached --quiet; then
-                    run_command "yadm commit -m \"updated secrets $(date +%Y-%m-%d)\"" "Committing encrypted YADM changes" true
+        if yadm add -u >> "$LOG_FILE" 2>&1; then
+            if yadm diff --cached --quiet; then
+                log "${YELLOW}No YADM changes to commit${NC}"
+                UPDATES_SKIPPED+=("YADM commit (no changes)")
+            else
+                run_command "yadm commit -m \"ran mac-update $(date +%Y-%m-%d)\"" "Committing YADM changes" true
+                
+                # Encrypt secrets if yadm encrypt is configured
+                if yadm config --get-all yadm.encrypt-program >/dev/null 2>&1; then
+                    run_command "yadm encrypt" "Encrypting YADM secrets" true
+                    run_command "yadm add -u" "Staging encrypted YADM changes" true
+                    if ! yadm diff --cached --quiet; then
+                        run_command "yadm commit -m \"updated secrets $(date +%Y-%m-%d)\"" "Committing encrypted YADM changes" true
+                    fi
                 fi
+                
+                run_command "yadm push" "Pushing YADM changes" true
             fi
-            
-            run_command "yadm push" "Pushing YADM changes" true
+        else
+            log "${YELLOW}Failed to stage YADM changes. Skipping YADM updates.${NC}"
+            UPDATES_SKIPPED+=("YADM updates (staging failed)")
         fi
     else
         log "${YELLOW}[DRY RUN] Would check and commit YADM changes${NC}"
