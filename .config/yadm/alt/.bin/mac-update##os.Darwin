@@ -93,8 +93,13 @@ cleanup_old_backups() {
     # Note: $backup_pattern is intentionally unquoted to allow glob expansion
     # shellcheck disable=SC2012,SC2086
     ls -dt $backup_pattern 2>/dev/null | tail -n +6 | while read -r old_backup; do
-        log_verbose "Removing old backup: $old_backup"
-        rm -rf "$old_backup"
+        # Add a safety check before deleting to avoid accidental removals
+        if [ -n "$old_backup" ] && [[ "$old_backup" == "$HOME/.mac-update-backup-"* ]]; then
+            log_verbose "Removing old backup: $old_backup"
+            rm -rf "$old_backup"
+        else
+            log "Skipping deletion of unexpected backup path: $old_backup"
+        fi
     done
 }
 
@@ -215,7 +220,7 @@ log_verbose "Verbose mode: $VERBOSE"
 # Check for required tools
 log_verbose "Checking for required tools..."
 if [ "$SKIP_BREW" = false ] && ! command_exists brew; then
-    log "${YELLOW}Warning: Homebrew not found. Skipping brew updates.${NC}"
+    log_verbose "Homebrew not found. Skipping brew updates."
     SKIP_BREW=true
 fi
 
@@ -245,13 +250,26 @@ if [ "$DRY_RUN" = false ] && [ "$SKIP_BACKUP" = false ]; then
     log "Creating backup of important files..."
     backup_dir="$HOME/.mac-update-backup-$(date +%Y%m%d-%H%M%S)"
     mkdir -p "$backup_dir"
+    backup_performed=false
     if [ -d "$HOME/.config/fish" ]; then
-        cp -r "$HOME/.config/fish" "$backup_dir/" 2>/dev/null && log_verbose "Backed up fish config"
+        if cp -r "$HOME/.config/fish" "$backup_dir/" 2>/dev/null; then
+            backup_performed=true
+            log_verbose "Backed up fish config"
+        fi
     fi
     if [ -d "$HOME/.config/yadm" ]; then
-        cp -r "$HOME/.config/yadm" "$backup_dir/" 2>/dev/null && log_verbose "Backed up yadm config"
+        if cp -r "$HOME/.config/yadm" "$backup_dir/" 2>/dev/null; then
+            backup_performed=true
+            log_verbose "Backed up yadm config"
+        fi
     fi
-    log "Backup created at: $backup_dir"
+    if [ "$backup_performed" = true ]; then
+        log "Backup created at: $backup_dir"
+    else
+        # Remove empty backup directory since nothing was backed up
+        rmdir "$backup_dir" 2>/dev/null || true
+        log "No files to back up. Backup directory not created."
+    fi
 fi
 
 # Homebrew updates
@@ -290,14 +308,21 @@ if [ "$SKIP_YADM" = false ]; then
                 log "${YELLOW}No YADM changes to commit${NC}"
                 UPDATES_SKIPPED+=("YADM commit (no changes)")
             else
-                run_command "yadm commit -m \"ran mac-update $(date +%Y-%m-%d)\"" "Committing YADM changes" true
+                run_command "yadm commit -m \"ran mac-update $(date +%Y-%m-%d)\"" "Committing YADM changes" false
                 
-                # Encrypt secrets if yadm encrypt is configured
-                if yadm config --get-all yadm.encrypt-program >/dev/null 2>&1; then
+                # Encrypt secrets if yadm encrypt is configured (non-empty .yadm/encrypt file)
+                if [ -s "$HOME/.yadm/encrypt" ]; then
                     run_command "yadm encrypt" "Encrypting YADM secrets" true
-                    run_command "yadm add -u" "Staging encrypted YADM changes" true
-                    if ! yadm diff --cached --quiet; then
-                        run_command "yadm commit -m \"updated secrets $(date +%Y-%m-%d)\"" "Committing encrypted YADM changes" true
+                    if run_command "yadm add -u" "Staging encrypted YADM changes" true; then
+                        if ! yadm diff --cached --quiet; then
+                            run_command "yadm commit -m \"updated secrets $(date +%Y-%m-%d)\"" "Committing encrypted YADM changes" true
+                        else
+                            log "${YELLOW}No encrypted YADM changes to commit${NC}"
+                            UPDATES_SKIPPED+=("Encrypted YADM commit (no changes)")
+                        fi
+                    else
+                        log "${YELLOW}Failed to stage encrypted YADM changes. Skipping encrypted YADM commit.${NC}"
+                        UPDATES_SKIPPED+=("Encrypted YADM updates (staging failed)")
                     fi
                 fi
                 
