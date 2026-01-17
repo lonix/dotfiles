@@ -213,6 +213,7 @@ if [[ $(uname) != "Darwin" ]]; then
 fi
 
 # Auto-skip MAS in CI environments (can't install MAS apps in CI due to UI requirement)
+# This check respects explicit --skip-mas flag: if already true, this won't change it
 if [ -n "$CI" ] && [ "$SKIP_MAS" = false ]; then
     log "${YELLOW}CI environment detected. Automatically skipping MAS updates.${NC}"
     SKIP_MAS=true
