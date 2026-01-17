@@ -185,7 +185,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --skip-brew          Skip Homebrew updates"
             echo "  --skip-cask          Skip Cask updates"
             echo "  --skip-fisher        Skip Fisher updates"
-            echo "  --skip-mas           Skip Mac App Store updates"
+            echo "  --skip-mas           Skip Mac App Store updates (auto-skipped in CI)"
             echo "  --skip-yadm          Skip YADM updates"
             echo "  --skip-backup        Skip creating backup of config files"
             echo "  --cleanup-backups    Remove old backup directories (keeps last 5)"
@@ -210,6 +210,12 @@ done
 # Check if running on macOS
 if [[ $(uname) != "Darwin" ]]; then
     handle_error "This script is only for macOS"
+fi
+
+# Auto-skip MAS in CI environments (can't install MAS apps in CI due to UI requirement)
+if [ -n "$CI" ] && [ "$SKIP_MAS" = false ]; then
+    log "${YELLOW}CI environment detected. Automatically skipping MAS updates.${NC}"
+    SKIP_MAS=true
 fi
 
 log "${GREEN}Starting macOS update process...${NC}"
