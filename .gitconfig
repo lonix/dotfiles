@@ -22,7 +22,7 @@
     merge = refs/heads/master
 
 [push]
-    default = matching
+    default = simple
     followTags = true
 
 [url "git@github.com:"]

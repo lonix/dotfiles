@@ -228,7 +228,7 @@ if [ "$SKIP_BREW" = false ] && ! command_exists brew; then
     log_verbose "Homebrew not found. Skipping brew updates."
     SKIP_BREW=true
 fi
-if [ "$SKIP_FISHER" = false ] && ! command_exists fisher; then
+if [ "$SKIP_FISHER" = false ] && ! fish -c "type -q fisher" >/dev/null 2>&1; then
     log_verbose "Fisher not found. Skipping fisher updates."
     SKIP_FISHER=true
 fi
@@ -282,7 +282,7 @@ fi
 
 # Fisher updates
 if [ "$SKIP_FISHER" = false ]; then
-    run_command "fisher update" "Updating Fisher packages"
+    run_command "fish -c 'fisher update'" "Updating Fisher packages"
 fi
 
 # Mac App Store updates
