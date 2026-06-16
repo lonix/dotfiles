@@ -46,7 +46,6 @@ cask "deckset"
 cask "balenaetcher"
 cask "bitwarden"
 cask "discord"
-cask "docker"
 cask "docker-desktop"
 cask "drawio"
 cask "font-hack-nerd-font"
@@ -63,7 +62,6 @@ cask "plex"
 cask "powershell"
 cask "spotify"
 cask "steam"
-cask "tailscale"
 cask "tailscale-app"
 cask "termius"
 cask "trailer"
@@ -81,6 +79,5 @@ mas "Microsoft Remote Desktop", id: 1295203466
 mas "Numbers", id: 409203825
 mas "Pages", id: 409201541
 mas "Slack", id: 803453959
-mas "Todoist", id: 585829637
 mas "Trello", id: 1278508951
 mas "Xcode", id: 497799835
