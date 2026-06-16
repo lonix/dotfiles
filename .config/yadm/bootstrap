@@ -32,8 +32,9 @@ OS=$(detect_os)
 log "Detected OS: $OS"
 ci_mode && warn "CI environment detected — skipping interactive steps."
 
-# Ensure ~/.bin exists for any local binaries
+# Ensure ~/.bin exists and is in PATH for this session
 mkdir -p "$HOME/.bin"
+export PATH="$HOME/.bin:$PATH"
 
 # ── macOS ────────────────────────────────────────────────────────────────────
 if [[ "$OS" == "macos" ]]; then
