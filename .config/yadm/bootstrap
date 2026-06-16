@@ -52,7 +52,7 @@ if [[ "$OS" == "macos" ]]; then
 elif [[ "$OS" == "rhel" ]]; then
     log "Installing base packages via dnf..."
     sudo dnf install -y epel-release
-    sudo dnf install -y git curl wget fish yadm
+    sudo dnf install -y git curl wget fish
 
 # ── Ubuntu / Debian ──────────────────────────────────────────────────────────
 elif [[ "$OS" == "debian" ]]; then
