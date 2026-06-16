@@ -34,3 +34,26 @@
   gpgSign = true
 [pull]
   rebase = true
+[init]
+  defaultBranch = main
+
+[color]
+  branch = always
+  diff = always
+  status = auto
+
+[color "branch"]
+  current = yellow reverse
+  local = yellow
+  remote = green
+
+[color "diff"]
+  meta = yellow
+  frag = magenta
+  old = red
+  new = green
+
+[color "status"]
+  added = yellow
+  changed = green
+  untracked = cyan

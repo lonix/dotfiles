@@ -77,17 +77,14 @@ if type -q docker
         docker ps --format '{{.Names}}' >$HOME/.bin/completions/fish/docker_containers.cache
     end
 
+    # Track last refresh in memory — avoids a file read on every prompt
+    set -g _docker_last_refresh 0
+
     function __refresh_docker_completions_timer --on-event fish_prompt
-        if test -f $HOME/.bin/completions/fish/docker_completions_timestamp
-            set timestamp (cat $HOME/.bin/completions/fish/docker_completions_timestamp)
-            set current_time (date +%s)
-            if test (math $current_time - $timestamp) -gt 3600
-                refresh_docker_completions
-                echo $current_time >$HOME/.bin/completions/fish/docker_completions_timestamp
-            end
-        else
+        set current_time (date +%s)
+        if test (math $current_time - $_docker_last_refresh) -gt 3600
             refresh_docker_completions
-            date +%s >$HOME/.bin/completions/fish/docker_completions_timestamp
+            set -g _docker_last_refresh $current_time
         end
     end
 end
