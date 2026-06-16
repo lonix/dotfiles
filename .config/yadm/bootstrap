@@ -62,7 +62,7 @@ elif [[ "$OS" == "debian" ]]; then
 
     if ! command -v fish >/dev/null 2>&1; then
         log "Installing fish shell..."
-        sudo apt-add-repository -y ppa:fish-shell/release-3
+        sudo apt-add-repository -y ppa:fish-shell/release-4
         sudo apt-get update
         sudo apt-get install -y fish
     fi
@@ -91,11 +91,15 @@ if ! ci_mode; then
         echo "$FISH_PATH" | sudo tee -a /etc/shells
     fi
 
-    log "Setting fish as default shell..."
-    chsh -s "$FISH_PATH"
+    if [ "$SHELL" != "$FISH_PATH" ]; then
+        log "Setting fish as default shell..."
+        chsh -s "$FISH_PATH"
+    fi
 
-    log "Setting yadm remote to SSH..."
-    yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
+    if ! yadm remote get-url origin 2>/dev/null | grep -q "git@github"; then
+        log "Setting yadm remote to SSH..."
+        yadm remote set-url origin "git@github.com:lonix/dotfiles.git"
+    fi
 fi
 
 # ── macOS only: iTerm2 + system defaults ─────────────────────────────────────
@@ -142,6 +146,7 @@ if [[ "$OS" == "macos" ]] && ! ci_mode; then
     defaults write com.apple.TimeMachine DoNotOfferNewDisksForBackup -bool true
 
     killall Dock
+    killall Finder
 fi
 
 log "Bootstrap complete!"
