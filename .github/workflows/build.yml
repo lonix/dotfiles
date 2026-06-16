@@ -48,7 +48,7 @@ jobs:
       CI: true
     steps:
       - name: Install dependencies
-        run: dnf install -y curl git
+        run: dnf install -y git
 
       - name: Install YADM
         run: |
