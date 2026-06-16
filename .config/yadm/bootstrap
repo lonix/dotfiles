@@ -14,6 +14,15 @@ err()  { echo -e "${RED}[bootstrap]${NC} $1" >&2; }
 
 ci_mode() { [ -n "${CI:-}" ]; }
 
+# In containers we run as root without sudo; on real servers we need it
+run_privileged() {
+    if command -v sudo >/dev/null 2>&1; then
+        sudo "$@"
+    else
+        "$@"
+    fi
+}
+
 # Detect OS by package manager / OSTYPE
 detect_os() {
     if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -51,20 +60,20 @@ if [[ "$OS" == "macos" ]]; then
 # ── AlmaLinux / RHEL / Fedora ────────────────────────────────────────────────
 elif [[ "$OS" == "rhel" ]]; then
     log "Installing base packages via dnf..."
-    sudo dnf install -y epel-release
-    sudo dnf install -y git curl wget fish
+    run_privileged dnf install -y epel-release
+    run_privileged dnf install -y git curl wget fish
 
 # ── Ubuntu / Debian ──────────────────────────────────────────────────────────
 elif [[ "$OS" == "debian" ]]; then
     log "Installing base packages via apt..."
-    sudo apt-get update
-    sudo apt-get install -y git curl wget yadm
+    run_privileged apt-get update
+    run_privileged apt-get install -y git curl wget yadm
 
     if ! command -v fish >/dev/null 2>&1; then
         log "Installing fish shell..."
-        sudo apt-add-repository -y ppa:fish-shell/release-4
-        sudo apt-get update
-        sudo apt-get install -y fish
+        run_privileged apt-add-repository -y ppa:fish-shell/release-4
+        run_privileged apt-get update
+        run_privileged apt-get install -y fish
     fi
 fi
 
@@ -88,7 +97,7 @@ if ! ci_mode; then
 
     if ! grep -qF "$FISH_PATH" /etc/shells; then
         log "Adding fish to /etc/shells..."
-        echo "$FISH_PATH" | sudo tee -a /etc/shells
+        echo "$FISH_PATH" | run_privileged tee -a /etc/shells
     fi
 
     if [ "$SHELL" != "$FISH_PATH" ]; then
