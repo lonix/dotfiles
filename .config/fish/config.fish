@@ -34,6 +34,11 @@ end
 # Simple aliases
 alias sl="ls"
 
+# yadm self-update (only when running the binary install, not a system package)
+if test -f $HOME/.bin/yadm
+    alias yadm-update="uyadm"
+end
+
 # Tailscale completion
 if type -q tailscale
     tailscale completion fish | source
