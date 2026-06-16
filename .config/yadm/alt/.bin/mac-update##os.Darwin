@@ -16,7 +16,7 @@ SKIP_MAS=false
 SKIP_YADM=false
 SKIP_BACKUP=false
 VERBOSE=false
-CLEANUP_OLD_BACKUPS=false
+KEEP_BACKUPS=5
 
 # Update summary
 UPDATES_PERFORMED=()
@@ -86,21 +86,16 @@ command_exists() {
     command -v "$1" >/dev/null 2>&1
 }
 
-# Function to cleanup old backups
-cleanup_old_backups() {
-    log "Cleaning up old backups (keeping last 5)..."
-    local backup_pattern="$HOME/.mac-update-backup-*"
-    # Note: $backup_pattern is intentionally unquoted to allow glob expansion
-    # shellcheck disable=SC2012,SC2086
-    ls -dt $backup_pattern 2>/dev/null | tail -n +6 | while read -r old_backup; do
-        # Add a safety check before deleting to avoid accidental removals
-        if [ -n "$old_backup" ] && [[ "$old_backup" == "$HOME/.mac-update-backup-"* ]]; then
-            log_verbose "Removing old backup: $old_backup"
-            rm -rf "$old_backup"
-        else
-            log "Skipping deletion of unexpected backup path: $old_backup"
+# Rotate old backups, keeping only the most recent KEEP_BACKUPS
+rotate_backups() {
+    local count=0
+    while IFS= read -r dir; do
+        count=$((count + 1))
+        if [ "$count" -gt "$KEEP_BACKUPS" ]; then
+            log "Removing old backup: $dir"
+            rm -rf "$dir"
         fi
-    done
+    done < <(find "$HOME" -maxdepth 1 -name '.mac-update-backup-*' -type d | sort -r)
 }
 
 # Function to print summary
@@ -109,31 +104,31 @@ print_summary() {
     log "${GREEN}═══════════════════════════════════════════════════${NC}"
     log "${GREEN}           Update Summary${NC}"
     log "${GREEN}═══════════════════════════════════════════════════${NC}"
-    
+
     if [ ${#UPDATES_PERFORMED[@]} -gt 0 ]; then
         log "${GREEN}✓ Successfully completed (${#UPDATES_PERFORMED[@]}):${NC}"
         for update in "${UPDATES_PERFORMED[@]}"; do
             log "  • $update"
         done
     fi
-    
+
     if [ ${#UPDATES_SKIPPED[@]} -gt 0 ]; then
         log "${YELLOW}⊘ Skipped (${#UPDATES_SKIPPED[@]}):${NC}"
         for update in "${UPDATES_SKIPPED[@]}"; do
             log "  • $update"
         done
     fi
-    
+
     if [ ${#UPDATES_FAILED[@]} -gt 0 ]; then
         log "${RED}✗ Failed (${#UPDATES_FAILED[@]}):${NC}"
         for update in "${UPDATES_FAILED[@]}"; do
             log "  • $update"
         done
     fi
-    
+
     log "${GREEN}═══════════════════════════════════════════════════${NC}"
     log "Log file: $LOG_FILE"
-    if [ "$DRY_RUN" = false ] && [ "$SKIP_BACKUP" = false ] && [ -n "$backup_dir" ]; then
+    if [ "$DRY_RUN" = false ] && [ "$SKIP_BACKUP" = false ] && [ -n "${backup_dir:-}" ]; then
         log "Backup directory: $backup_dir"
     fi
 }
@@ -169,12 +164,16 @@ while [[ $# -gt 0 ]]; do
             SKIP_BACKUP=true
             shift
             ;;
+        --keep-backups)
+            if ! [[ "$2" =~ ^[0-9]+$ ]]; then
+                echo "Error: --keep-backups requires a positive integer"
+                exit 1
+            fi
+            KEEP_BACKUPS="$2"
+            shift 2
+            ;;
         --verbose|-v)
             VERBOSE=true
-            shift
-            ;;
-        --cleanup-backups)
-            CLEANUP_OLD_BACKUPS=true
             shift
             ;;
         --help|-h)
@@ -185,10 +184,10 @@ while [[ $# -gt 0 ]]; do
             echo "  --skip-brew          Skip Homebrew updates"
             echo "  --skip-cask          Skip Cask updates"
             echo "  --skip-fisher        Skip Fisher updates"
-            echo "  --skip-mas           Skip Mac App Store updates (auto-skipped in CI)"
+            echo "  --skip-mas           Skip Mac App Store updates"
             echo "  --skip-yadm          Skip YADM updates"
             echo "  --skip-backup        Skip creating backup of config files"
-            echo "  --cleanup-backups    Remove old backup directories (keeps last 5)"
+            echo "  --keep-backups N     Number of backups to keep (default: 5)"
             echo "  -v, --verbose        Enable verbose output"
             echo "  -h, --help           Show this help message"
             echo ""
@@ -196,7 +195,7 @@ while [[ $# -gt 0 ]]; do
             echo "  mac-update                          # Run all updates"
             echo "  mac-update --dry-run                # Preview what would be updated"
             echo "  mac-update --skip-cask --skip-mas   # Update brew and fisher only"
-            echo "  mac-update --cleanup-backups        # Cleanup old backups after update"
+            echo "  mac-update --keep-backups 3         # Keep only 3 backups"
             exit 0
             ;;
         *)
@@ -212,9 +211,8 @@ if [[ $(uname) != "Darwin" ]]; then
     handle_error "This script is only for macOS"
 fi
 
-# Auto-skip MAS in CI environments (can't install MAS apps in CI due to UI requirement)
-# This check respects explicit --skip-mas flag: if already true, this won't change it
-if [ -n "$CI" ] && [ "$SKIP_MAS" = false ]; then
+# Auto-skip MAS in CI environments
+if [ -n "${CI:-}" ] && [ "$SKIP_MAS" = false ]; then
     log "${YELLOW}CI environment detected. Automatically skipping MAS updates.${NC}"
     SKIP_MAS=true
 fi
@@ -222,36 +220,28 @@ fi
 log "${GREEN}Starting macOS update process...${NC}"
 log_verbose "Dry run: $DRY_RUN"
 log_verbose "Skip backup: $SKIP_BACKUP"
+log_verbose "Keep backups: $KEEP_BACKUPS"
 log_verbose "Verbose mode: $VERBOSE"
 
 # Check for required tools
-log_verbose "Checking for required tools..."
 if [ "$SKIP_BREW" = false ] && ! command_exists brew; then
     log_verbose "Homebrew not found. Skipping brew updates."
     SKIP_BREW=true
 fi
-
 if [ "$SKIP_FISHER" = false ] && ! command_exists fisher; then
     log_verbose "Fisher not found. Skipping fisher updates."
     SKIP_FISHER=true
 fi
-
 if [ "$SKIP_MAS" = false ] && ! command_exists mas; then
     log_verbose "mas-cli not found. Skipping Mac App Store updates."
     SKIP_MAS=true
 fi
-
 if [ "$SKIP_YADM" = false ] && ! command_exists yadm; then
     log_verbose "yadm not found. Skipping yadm updates."
     SKIP_YADM=true
 fi
 
-# Cleanup old backups if requested
-if [ "$CLEANUP_OLD_BACKUPS" = true ]; then
-    cleanup_old_backups
-fi
-
-# Create backup of important files
+# Create backup of important files, then rotate old ones
 backup_dir=""
 if [ "$DRY_RUN" = false ] && [ "$SKIP_BACKUP" = false ]; then
     log "Creating backup of important files..."
@@ -259,23 +249,18 @@ if [ "$DRY_RUN" = false ] && [ "$SKIP_BACKUP" = false ]; then
     mkdir -p "$backup_dir"
     backup_performed=false
     if [ -d "$HOME/.config/fish" ]; then
-        if cp -r "$HOME/.config/fish" "$backup_dir/" 2>/dev/null; then
-            backup_performed=true
-            log_verbose "Backed up fish config"
-        fi
+        cp -r "$HOME/.config/fish" "$backup_dir/" 2>/dev/null && backup_performed=true
     fi
     if [ -d "$HOME/.config/yadm" ]; then
-        if cp -r "$HOME/.config/yadm" "$backup_dir/" 2>/dev/null; then
-            backup_performed=true
-            log_verbose "Backed up yadm config"
-        fi
+        cp -r "$HOME/.config/yadm" "$backup_dir/" 2>/dev/null && backup_performed=true
     fi
     if [ "$backup_performed" = true ]; then
-        log "Backup created at: $backup_dir"
+        log_verbose "Backup created at: $backup_dir"
+        rotate_backups
     else
-        # Remove empty backup directory since nothing was backed up
         rmdir "$backup_dir" 2>/dev/null || true
-        log "No files to back up. Backup directory not created."
+        backup_dir=""
+        log_verbose "No files to back up."
     fi
 fi
 
@@ -291,7 +276,6 @@ if [ "$SKIP_CASK" = false ]; then
         run_command "brew cu -y" "Upgrading Cask applications"
     else
         log "${YELLOW}brew-cask-upgrade not installed. Skipping cask updates.${NC}"
-        log_verbose "Install with: brew tap buo/cask-upgrade"
         UPDATES_SKIPPED+=("Cask updates (brew-cask-upgrade not installed)")
     fi
 fi
@@ -308,31 +292,23 @@ fi
 
 # YADM updates
 if [ "$SKIP_YADM" = false ]; then
-    # Check if there are any changes to commit
     if [ "$DRY_RUN" = false ]; then
         if yadm add -u >> "$LOG_FILE" 2>&1; then
-            if yadm diff --cached --quiet; then
+            if yadm diff --cached --quiet 2>/dev/null; then
                 log "${YELLOW}No YADM changes to commit${NC}"
                 UPDATES_SKIPPED+=("YADM commit (no changes)")
             else
-                run_command "yadm commit -m \"ran mac-update $(date +%Y-%m-%d)\"" "Committing YADM changes" false
-                
-                # Encrypt secrets if yadm encrypt is configured (non-empty .yadm/encrypt file)
-                if [ -s "$HOME/.yadm/encrypt" ]; then
+                run_command "yadm commit -m \"ran mac-update $(date +%Y-%m-%d)\"" "Committing YADM changes"
+                if [ -s "$HOME/.config/yadm/encrypt" ]; then
                     run_command "yadm encrypt" "Encrypting YADM secrets" true
-                    if run_command "yadm add -u" "Staging encrypted YADM changes" true; then
-                        if ! yadm diff --cached --quiet; then
-                            run_command "yadm commit -m \"updated secrets $(date +%Y-%m-%d)\"" "Committing encrypted YADM changes" true
-                        else
-                            log "${YELLOW}No encrypted YADM changes to commit${NC}"
-                            UPDATES_SKIPPED+=("Encrypted YADM commit (no changes)")
-                        fi
+                    yadm add -u >> "$LOG_FILE" 2>&1 || true
+                    if ! yadm diff --cached --quiet 2>/dev/null; then
+                        run_command "yadm commit -m \"updated secrets $(date +%Y-%m-%d)\"" "Committing encrypted YADM changes" true
                     else
-                        log "${YELLOW}Failed to stage encrypted YADM changes. Skipping encrypted YADM commit.${NC}"
-                        UPDATES_SKIPPED+=("Encrypted YADM updates (staging failed)")
+                        log "${YELLOW}No encrypted YADM changes to commit${NC}"
+                        UPDATES_SKIPPED+=("Encrypted YADM commit (no changes)")
                     fi
                 fi
-                
                 run_command "yadm push" "Pushing YADM changes" true
             fi
         else

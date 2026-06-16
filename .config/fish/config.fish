@@ -1,7 +1,7 @@
 if status is-interactive
-    export EDITOR='code -w '
+    set -gx EDITOR 'code -w'
 else
-    export EDITOR='vim'
+    set -gx EDITOR 'vim'
 end
 
 #GPG Hack
@@ -37,11 +37,6 @@ test -e {$HOME}/.iterm2_shell_integration.fish; and source {$HOME}/.iterm2_shell
 
 #include local config
 test -e ~/.config/fish/config.local.fish; and source ~/.config/fish/config.local.fish
-
-# Add the scripts directory to PATH if it's not already there
-if not contains $HOME/.bin $PATH
-    set -a PATH $HOME/.bin
-end
 
 # Set up completions
 if test -d $HOME/.bin/completions/fish
