@@ -52,13 +52,13 @@ if [[ "$OS" == "macos" ]]; then
 elif [[ "$OS" == "rhel" ]]; then
     log "Installing base packages via dnf..."
     sudo dnf install -y epel-release
-    sudo dnf install -y git curl wget fish
+    sudo dnf install -y git curl wget fish yadm
 
 # ── Ubuntu / Debian ──────────────────────────────────────────────────────────
 elif [[ "$OS" == "debian" ]]; then
     log "Installing base packages via apt..."
     sudo apt-get update
-    sudo apt-get install -y git curl wget
+    sudo apt-get install -y git curl wget yadm
 
     if ! command -v fish >/dev/null 2>&1; then
         log "Installing fish shell..."
@@ -74,9 +74,9 @@ if ! command -v starship >/dev/null 2>&1; then
     curl -fsSL https://starship.rs/install.sh | sh -s -- -y
 fi
 
-# ── All platforms: yadm ───────────────────────────────────────────────────────
+# ── All platforms: yadm (binary fallback if not installed by package manager) ─
 if ! command -v yadm >/dev/null 2>&1; then
-    log "Installing yadm..."
+    log "Installing yadm via binary fallback..."
     curl -fLo "$HOME/.bin/yadm" \
         https://github.com/TheLocehiliosan/yadm/raw/master/yadm
     chmod +x "$HOME/.bin/yadm"
