@@ -1,6 +1,4 @@
 tap "buo/cask-upgrade"
-tap "homebrew/bundle"
-tap "nektos/tap"
 brew "act"
 brew "azure-cli"
 brew "bash"
