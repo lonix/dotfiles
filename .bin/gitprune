@@ -1,2 +1,3 @@
 #!/bin/bash
-git branch --no-color  -vv | grep ': gone]'|  grep -v "\*" | awk '{ print $1; }' | xargs -r git branch -D
+branches=$(git branch --no-color -vv | grep ': gone]' | grep -v "\*" | awk '{ print $1; }')
+[ -n "$branches" ] && echo "$branches" | xargs git branch -D
