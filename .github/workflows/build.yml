@@ -13,9 +13,11 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  bootstrap:
+    name: Bootstrap (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
+      fail-fast: false
       matrix:
         os: [macos-latest, ubuntu-latest]
     env:
@@ -23,16 +25,44 @@ jobs:
     steps:
       - name: Install YADM
         run: |
-          curl -fLo ~/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
-          chmod a+x ~/yadm
-          ~/yadm version
+          mkdir -p ~/.bin
+          curl -fLo ~/.bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
+          chmod a+x ~/.bin/yadm
+          echo "$HOME/.bin" >> "$GITHUB_PATH"
+          ~/.bin/yadm version
 
       - name: Clone dotfiles
-        run: |
-          cd ~
-          ~/yadm clone https://github.com/lonix/dotfiles.git
+        run: yadm clone --no-bootstrap https://github.com/lonix/dotfiles.git
 
-      - name: Run bootstrap script
+      - name: Apply alt files
+        run: yadm alt
+
+      - name: Run bootstrap
+        run: yadm bootstrap
+
+  bootstrap-almalinux:
+    name: Bootstrap (AlmaLinux 9)
+    runs-on: ubuntu-latest
+    container: almalinux:9
+    env:
+      CI: true
+    steps:
+      - name: Install dependencies
+        run: dnf install -y curl git
+
+      - name: Install YADM
         run: |
-          cd ~
-          ~/yadm bootstrap
+          mkdir -p ~/.bin
+          curl -fLo ~/.bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
+          chmod a+x ~/.bin/yadm
+          echo "$HOME/.bin" >> "$GITHUB_PATH"
+          ~/.bin/yadm version
+
+      - name: Clone dotfiles
+        run: yadm clone --no-bootstrap https://github.com/lonix/dotfiles.git
+
+      - name: Apply alt files
+        run: yadm alt
+
+      - name: Run bootstrap
+        run: yadm bootstrap
