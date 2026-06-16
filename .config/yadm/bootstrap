@@ -61,7 +61,7 @@ if [[ "$OS" == "macos" ]]; then
 elif [[ "$OS" == "rhel" ]]; then
     log "Installing base packages via dnf..."
     run_privileged dnf install -y epel-release
-    run_privileged dnf install -y git curl wget fish
+    run_privileged dnf install -y git wget fish
 
 # ── Ubuntu / Debian ──────────────────────────────────────────────────────────
 elif [[ "$OS" == "debian" ]]; then
