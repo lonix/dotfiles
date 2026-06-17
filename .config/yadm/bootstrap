@@ -54,7 +54,12 @@ if [[ "$OS" == "macos" ]]; then
 
     if [ -f "$HOME/.Brewfile" ]; then
         log "Installing Homebrew packages..."
-        brew bundle --global
+        if ci_mode; then
+            # Casks and mas entries can't install in CI (no GUI, no App Store session)
+            brew bundle --global --brews --no-upgrade
+        else
+            brew bundle --global
+        fi
     fi
 
 # ── AlmaLinux / RHEL / Fedora ────────────────────────────────────────────────
